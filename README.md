@@ -7,9 +7,10 @@
 
 
 
-######Repo Info:
+######Repo Info
   - Contains essential Chrome extension scripts (apps folder).
 
+######For the Devs
 To update repo via Visual Studio (get GIT tools for VS):
 
 1. Open the Team Explorer menu.
