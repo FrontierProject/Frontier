@@ -1,7 +1,7 @@
 
 
 ![alt tag](https://github.com/FrontierProject/Frontier/blob/master/Frontier/Frontier/app/img/frontier_icon_128.png)
-#### Frontier
+# Frontier
 ####  Authors
 Sriharish Vangavolu, Hayden Wood, Joseph Newman
 #### Description
