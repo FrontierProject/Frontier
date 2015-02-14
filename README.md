@@ -1,16 +1,18 @@
 
 
 ![alt tag](https://github.com/FrontierProject/Frontier/blob/master/Frontier/Frontier/app/img/frontier_icon_128.png)
-# Frontier
-######  Authors: Sriharish Vangavolu, Hayden Wood, Joseph Newman
-######  Description: Currently a Texas A&M Undergraduate Senior Capstone Project, Frontier aims at reshaping the nature of web session structure, navigation, and page management. We wish to pioneer a means of navigating and organizing the web of tomorrow.
+#### Frontier
+####  Authors
+Sriharish Vangavolu, Hayden Wood, Joseph Newman
+#### Description
+Currently a Texas A&M Undergraduate Senior Capstone Project, Frontier aims at reshaping the nature of web session structure, navigation, and page management. We wish to pioneer a means of navigating and organizing the web of tomorrow.
 
 
 
-######Repo Info
+####Repo Info
   - Contains essential Chrome extension scripts (apps folder).
 
-######For the Devs
+####For the Devs
 To update repo via Visual Studio (get GIT tools for VS):
 
 1. Open the Team Explorer menu.
