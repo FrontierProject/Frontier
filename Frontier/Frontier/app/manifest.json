@@ -1,15 +1,32 @@
 {
+  "name": "Frontier",
+  "version":"1.0",
   "manifest_version": 2,
+  "description": "Frontier Web Navigation Solution",
 
-  "name": "One-click Kittens",
-  "description": "This extension demonstrates a browser action with kittens.",
-  "version": "1.0",
+  "icons":{
+	"16": "img/frontier_icon_16.png",
+	"48": "img/frontier_icon_48.png",
+	"128": "img/frontier_icon_128.png"
+  },
+
+  "background":{
+	"scripts": ["background.js"]
+  },
+
+  "options_page": "options.html",
+
+  "browser_action": {
+	"default_title": "Frontier",
+    "default_icon": "img/frontier_icon_16.png",
+    "default_popup": "popup.html"
+  },
 
   "permissions": [
-    "https://secure.flickr.com/"
-  ],
-  "browser_action": {
-    "default_icon": "img/icon.png",
-    "default_popup": "popup.html"
-  }
+    "background",
+	"tabs",
+	"http://*/*",
+	"https://*/*"
+  ]
+  
 }
