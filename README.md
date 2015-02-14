@@ -8,7 +8,7 @@
 
 
 ######Repo Info:
-######  - Contains essential Chrome extension scripts (apps folder).
+  - Contains essential Chrome extension scripts (apps folder).
 
 To update repo via Visual Studio (get GIT tools for VS):
 
