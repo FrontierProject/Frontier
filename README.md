@@ -22,5 +22,3 @@ To update repo via Visual Studio (get GIT tools for VS):
 5. Pull by selecting "Unsynced Commits" (especially for master branch).
 6. Push to Frontier repo (select "Unsynced Commits") by logging in. Cheers!
 7. Always remember to sync with master for most up to date code!
-
--Harish
