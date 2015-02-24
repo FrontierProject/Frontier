@@ -39,6 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app\background.js" />
+    <Content Include="app\Frontier.js" />
+    <Content Include="app\Graph.js" />
+    <Content Include="app\GraphBuilder.js" />
     <Content Include="app\img\frontier_icon_128.png" />
     <Content Include="app\img\frontier_icon_16.png" />
     <Content Include="app\img\frontier_icon_48.png" />
