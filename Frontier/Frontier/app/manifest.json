@@ -11,15 +11,27 @@
   },
 
   "background":{
-	"scripts": ["background.js"]
+	"page": "background.html"
   },
+
+  "content_scripts": [
+  
+	{
+		"matches": ["*"],
+		"js": ["jquery-2.1.3.min.js", "forked_links.js"],
+		"css": ["forked_links.css"],
+		"html": ["forked_links.html"],
+		"run_at": "document_start"
+	
+	}
+  
+  ],
 
   "options_page": "options.html",
 
   "browser_action": {
 	"default_title": "Frontier",
     "default_icon": "img/frontier_icon_16.png",
-    "default_popup": "popup.html"
   },
 
   "permissions": [

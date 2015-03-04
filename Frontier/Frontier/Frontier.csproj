@@ -38,13 +38,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="app\background.html" />
     <Content Include="app\background.js" />
+    <Content Include="app\forked_links.html" />
+    <Content Include="app\forked_links.css" />
+    <Content Include="app\forked_links.js" />
+    <Content Include="app\img\frontierblue_icon_16.png" />
     <Content Include="app\img\frontier_icon_128.png" />
     <Content Include="app\img\frontier_icon_16.png" />
     <Content Include="app\img\frontier_icon_48.png" />
+    <Content Include="app\jquery-2.1.3.min.js" />
     <Content Include="app\options.html" />
-    <Content Include="app\popup.html" />
-    <Content Include="app\popup.js" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />
     <Content Include="screenshots\screenshot.png" />
