@@ -1,2 +1,39 @@
-﻿body {
+﻿* {
+    margin: 0;
+    padding:0;
+}
+div{
+    position: relative;
+    margin-top: 20px;
+    margin-left:20px;
+}
+ul{
+    list-style-type: none;
+    width: 260px;
+}
+li p{
+    display:inline;
+    font: 200 14px/1.5 calibri;
+    font-weight: bold;
+    color: #eee;
+}
+li{
+    padding: 0px;
+    overflow: 'auto';
+    margin-bottom: 10px;
+    background: repeating-linear-gradient(rgba(255, 0, 0, 1), #cc0000);
+    box-shadow: #666666 1px 1px 5px;
+    border: solid;
+    border-radius: 3px;
+    border-width: 0px;
+    border-color: #cc0000;
+    margin-right: 260px;
+}
+li:hover{
+    background : repeating-linear-gradient(rgba(255, 45, 45, 1), #de0101);
+    cursor: pointer;
+    border-color: #cc0000;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 15px;
 }
