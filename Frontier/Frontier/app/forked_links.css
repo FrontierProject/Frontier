@@ -1,35 +1,34 @@
-﻿* {
-    margin: 0;
-    padding:0;
+﻿#list_container {
+    z-index: 10000;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background-color: rgba(0, 0, 0, 0);
 }
-div{
-    position: relative;
-    margin-top: 20px;
-    margin-left:20px;
-}
-ul{
+#url_list{
     list-style-type: none;
     width: 260px;
+    overflow: auto;
 }
-li p{
+#url_list li p{
     display:inline;
     font: 200 14px/1.5 calibri;
     font-weight: bold;
     color: #eee;
 }
-li{
-    padding: 0px;
-    overflow: 'auto';
+#url_list li{
+    padding: 10px;
+    overflow:hidden;
     margin-bottom: 10px;
     background: repeating-linear-gradient(rgba(255, 0, 0, 1), #cc0000);
     box-shadow: #666666 1px 1px 5px;
     border: solid;
     border-radius: 3px;
-    border-width: 0px;
+    border-width: 1px;
     border-color: #cc0000;
     margin-right: 260px;
 }
-li:hover{
+.list_item:hover{
     background : repeating-linear-gradient(rgba(255, 45, 45, 1), #de0101);
     cursor: pointer;
     border-color: #cc0000;
