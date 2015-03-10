@@ -2,22 +2,20 @@ FRONTIER.Graph = function() {
 
     this.nodes = [];
     this.links = [];
-
+	this.discovered = new Set();
 };
 
 FRONTIER.Graph.prototype = {
 
     addEdge: function() {
-        var discovered = new Set();
-
         return function(source, target) {
-            if (!discovered.has(source.url)) {
-                discovered.add(source.url);
+            if (!this.discovered.has(source.url)) {
+                this.discovered.add(source.url);
                 this.nodes.push(source);
             }
 
-            if (!discovered.has(target.url)) {
-                discovered.add(target.url);
+            if (!this.discovered.has(target.url)) {
+                this.discovered.add(target.url);
                 this.nodes.push(target);
             }
 
