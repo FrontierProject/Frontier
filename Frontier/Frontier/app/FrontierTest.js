@@ -14,10 +14,10 @@ QUnit.test("Graph initialization should have no nodes or links", function(assert
 
 QUnit.test("addEdge should add two new nodes and one new link", function(assert) {
 	// These all need to be DIFFERENT (unique) with respect to other tests
-	this.source = {url: "source"};
-	this.target = {url: "target"};
+	var source = {url: "source"};
+	var target = {url: "target"};
 	
-	this.frontierGraph.addEdge(this.source, this.target);
+	this.frontierGraph.addEdge(source, target);
 	
 	console.log(this.frontierGraph);
 	
@@ -27,12 +27,12 @@ QUnit.test("addEdge should add two new nodes and one new link", function(assert)
 
 QUnit.test("addEdge should not add node if already in graph", function(assert) {
 	// These all need to be DIFFERENT (unique) with respect to other tests
-	this.source1 = {url: "source1"};
-	this.source2 = {url: "source2"};
-	this.target1 = {url: "target1"};
+	var source1 = {url: "source1"};
+	var source2 = {url: "source2"};
+	var target = {url: "target"};
 	
-	this.frontierGraph.addEdge(this.source1, this.target1);
-	this.frontierGraph.addEdge(this.source2, this.target1);
+	this.frontierGraph.addEdge(source1, target);
+	this.frontierGraph.addEdge(source2, target);
 	
 	console.log(this.frontierGraph);
 	
