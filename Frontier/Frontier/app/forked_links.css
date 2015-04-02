@@ -3,6 +3,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    max-width: 260px;
     
     background-color: rgba(0, 0, 0, 0);
 
@@ -15,6 +16,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
+    max-width: 260px;
     
     background-color: rgba(0, 0, 0, 0);
 
@@ -22,10 +24,10 @@
     -webkit-animation-timing-function: ease;
 }
 
-#foward_url_list {
+#forward_url_list {
     list-style-type: none;
     width: 260px;
-    margin-right: 0px;
+    margin: 0px;
     
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
@@ -38,7 +40,7 @@
 #back_url_list {
     list-style-type: none;
     width: 260px;
-    margin-right: 0px;
+    margin: 0px;
     
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
@@ -118,6 +120,7 @@
     background : repeating-linear-gradient(rgba(255, 45, 45, 1), #de0101);
     cursor: pointer;
     border-color: #cc0000;
+    margin-top: 0px;
     margin-right: 5px;
     padding-right: 15px;
 }
@@ -126,6 +129,7 @@
     background : repeating-linear-gradient(rgba(45, 45, 255, 1), #0101de);
     cursor: pointer;
     border-color: #0000cc;
+    margin-top: 0px;
     margin-left: 5px;
     padding-left: 15px;
 }
