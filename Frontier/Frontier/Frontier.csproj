@@ -38,11 +38,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app\background.html" />
     <Content Include="app\background.js" />
+    <Content Include="app\content_script.js" />
+    <Content Include="app\d3.min.js" />
     <Content Include="app\forked_links.html" />
     <Content Include="app\forked_links.css" />
     <Content Include="app\forked_links.js" />
+    <Content Include="app\Graph.js" />
+    <Content Include="app\GraphBuilder.js" />
+    <Content Include="app\history.html" />
+    <Content Include="app\history.js" />
     <Content Include="app\img\frontierblue_icon_16.png" />
     <Content Include="app\img\frontier_icon_128.png" />
     <Content Include="app\img\frontier_icon_16.png" />

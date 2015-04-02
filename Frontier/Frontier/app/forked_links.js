@@ -10,18 +10,27 @@ $(document).ready((function (){
         var tmplt = "<li class=\"list_item\"><p>{{url}}</p></li>";
         
         var imports = "<link rel=\"stylesheet\" type=\"text/css\" href=\"forked_links.css\" /><script src=\"jquery-2.1.3.min.js\"></script><script src=\"forked_links.js\"></script>";
-        var data = "";
+        var forwardData = "";
+        var backData = "";
 
+        //functions
         //dynamically populates the list and animates
-        function updateList(urls) {
+        function updateList(backLinks, forwardLinks) {
             $("head").append(imports);
             
-            var menu = $.map(urls, function (url) {
-                return tmplt.replace(/{{url}}/, url);
+            //var backMenu = $.map(backLinks, function (backLink) {
+            //    return tmplt.replace(/{{url}}/, backLink.url);
+            //}).join("");
+
+            //backData = "<div id=\"list_container\"><ul style=\"list-style-type:none;\" id=\"url_list\">" + backMenu + "</ul></div>";
+            //$("body").append(backData);
+
+            var forwardMenu = $.map(forwardLinks, function (forwardLink) {
+                return tmplt.replace(/{{url}}/, forwardLink[0]);
             }).join("");
 
-            data = "<div id=\"list_container\"><ul style=\"list-style-type:none;\" id=\"url_list\">" + menu + "</ul></div>";
-            $("body").append(data);
+            forwardData = "<div id=\"list_container\"><ul style=\"list-style-type:none;\" id=\"url_list\">" + forwardMenu + "</ul></div>";
+            $("body").append(forwardData);
         }
         function showList() {
             //showList
@@ -49,9 +58,19 @@ $(document).ready((function (){
             );
         }
 
+        
+
+
         //fades the list into view
         $list.hide(1000);
-        updateList(["thing 1", "thing 2", "thing 3", "thing 4"]);
+        
+        chrome.runtime.sendMessage({
+            type: "FORKED_LINKS",
+            url: document.URL
+        }, function (response) {
+            updateList(response.backLinks, response.forwardLinks);
+        });
+
         showList();
         highlightOption();
 
