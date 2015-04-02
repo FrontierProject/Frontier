@@ -19,20 +19,29 @@ $(document).ready((function (){
         function updateList(backLinks, forwardLinks) {
             // $("head").append(imports);
             
-            var backMenu = $.map(backLinks, function (backLink) {
-               return tmplt.replace(/{{url}}/, backLink);
-            }).join("");
+            // Only display when there is a fork
+            if (backLinks.length > 1)
+            {
+                var backMenu = $.map(backLinks, function (backLink) {
+                   return tmplt.replace(/{{url}}/, backLink);
+                }).join("");
 
-            backData = "<div id=\"back_list_container\"><ul style=\"list-style-type:none;\" id=\"back_url_list\">" + backMenu + "</ul></div>";
-            $("body").append(backData);
+                backData = "<div id=\"back_list_container\"><ul style=\"list-style-type:none;\" id=\"back_url_list\">" + backMenu + "</ul></div>";
+                $("body").append(backData);
+            }
+            
+            // Only display when there is a fork
+            if (forwardLinks.length > 1)
+            {
+                var forwardMenu = $.map(forwardLinks, function (forwardLink) {
+                    return tmplt.replace(/{{url}}/, forwardLink);
+                }).join("");
 
-            var forwardMenu = $.map(forwardLinks, function (forwardLink) {
-                return tmplt.replace(/{{url}}/, forwardLink);
-            }).join("");
-
-            forwardData = "<div id=\"forward_list_container\"><ul style=\"list-style-type:none;\" id=\"forward_url_list\">" + forwardMenu + "</ul></div>";
-            $("body").append(forwardData);
+                forwardData = "<div id=\"forward_list_container\"><ul style=\"list-style-type:none;\" id=\"forward_url_list\">" + forwardMenu + "</ul></div>";
+                $("body").append(forwardData);
+            }
         }
+        
         // function showList() {
             // //showList
             // $list.fadeIn(1000);
