@@ -4,10 +4,7 @@ $(document).ready((function (){
    
     //Tested code here: http://jsfiddle.net/mvCUH/198/
     
-        //$ indicates selector
-        // var $forwardList = $("#forward_list_container #url_list");
-        // var $backList = $("#forward_list_container #url_list");
-        // var $listItems = $("#forward_list_container #back_list_contrainer #url_list .list_item");
+        //template string for list items
         var tmplt = "<li class=\"list_item\"><p>{{url}}</p></li>";
         
         // var imports = "<link rel=\"stylesheet\" type=\"text/css\" href=\"forked_links.css\" /><script src=\"jquery-2.1.3.min.js\"></script><script src=\"forked_links.js\"></script>";
@@ -41,32 +38,34 @@ $(document).ready((function (){
                 $("body").append(forwardData);
             }
         }
-        
-        // function showList() {
-            // //showList
-            // $list.fadeIn(1000);
-            // //hideList after extending
-            // $(".list_item").animate({
-                // 'margin-right': '-=250px'
-            // }, 800).delay(5000);
-            // //$(".list_item").fadeOut(500);
-        // }
-        // function highlightOption() {
-            // $(".list_item").mouseenter(
-                // function () {
-                    // $(this).css({
-                        // 'margin-right': '5px'
-                    // });
-                // }
-            // );
-            // $(".list_item").mouseleave(
-                // function () {
-                    // $(this).css({
-                        // 'margin-right': '10px'
-                    // });
-                // }
-            // );
-        // }
+
+
+        /*
+         function showList() {
+             //showList
+             $list.fadeIn(1000);
+             //hideList after extending
+             $(".list_item").animate({
+                 'margin-right': '-=250px'
+             }, 800).delay(5000);
+             //$(".list_item").fadeOut(500);
+         }
+         function highlightOption() {
+             $(".list_item").mouseenter(
+                 function () {
+                     $(this).css({
+                         'margin-right': '5px'
+                     });
+                 }
+             );
+             $(".list_item").mouseleave(
+                 function () {
+                     $(this).css({
+                         'margin-right': '10px'
+                     });
+                 }
+             );
+         }*/
 
         
 
@@ -80,7 +79,7 @@ $(document).ready((function (){
         }, function (response) {
             updateList(response.backLinks, response.forwardLinks);
         });
-
+        
         // showList();
         // highlightOption();
 
