@@ -1,34 +1,123 @@
-<!DOCTYPE html>
-<title>HISTORY</title>
-<style>
+﻿<!DOCTYPE html>
+<html id="history_page">
+<head>
+    <meta charset="utf-8" />
+    <title>History</title>
+    <link rel="stylesheet" type="text/css" href="forked_links.css" />
+	<script src="d3.min.js"></script>
+</head>
+<body id="history_body">
+    <div id="chrome_heading_container">
+        <h1 id="chrome_heading">Chrome</h1>
+    </div>
+    <div id="history_menu">
+        <ul id="chrome_page_list">
+            <li class="menu_item" id="history_item"><a href="" target="historyFrame">History</a></li>
+            <li class="menu_item" id="extension_item"><a href="extensionsFrame">Extensions</a></li>
+            <li class="menu_item" id="settings_item"><a href="settingsFrame" target="">Settings</a></li>
+            <li class="menu_item" id="about_item"><a href="helpFrame" target="settingsFrame">About</a></li>
+        </ul>
+    </div>
+    <div id="history_workspace">
+        <h1 id="history_heading">History</h1>
+    </div>
+    <div id="history_controls">
+        <button id="clear_browsing">Clear browsing data...</button>
+        <button id="remove_selected">Remove Selected Items</button>
+        <label id="sort_label">Sort by:</label>
+    </div>
+    <div id="results_display">
 
-.graph {
-  background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
-}
 
-.graph line {
-  stroke: white;
-  stroke-width: 2px;
-  opacity: 0.20;
-}
+    </div>
+    <div id="graph_display">
+		<script>
 
-.graph circle {
-  fill: white;
-  opacity: 0.80;
-}
+		var width = 1024;
+		var height = 800;
 
-.graph circle:hover {
-  fill: yellow;
-  opacity: 1;
-}
+		var clusterOut = d3.layout.cluster()
+			.size([height, width / 2]);
 
-.graph text {
-  fill: yellow;
-  font: 10pt Verdana;
-  //text-anchor: end;
-}
+		var diagonalOut = d3.svg.diagonal()
+			.projection(function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return [d.y, d.x];
+					else
+					  return [-d.y, d.x];
+				  }
+				  return [0,d.x];
+				});
 
-</style>
-<svg class="graph"></svg>
-<script src="d3.min.js"></script>
-<script src="history.js"></script>
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height)
+		  .append("g")
+			.attr("transform", "translate(" + (width / 2) + ",0)");
+
+		var rootOut = {
+		  type: "root",
+		  name: "github.com/mbostock/d3/wiki",
+		  children: [
+			{type: "in", name: "bost.ocks.org/mike/bar/"},
+			{type: "in", name: "bost.ocks.org/mike/selection/"},
+			{type: "in", name: "recursion.org/d3-for-mere-mortals/"},
+			{type: "out", name: "bost.ocks.org/mike/bar/"},
+			{type: "out", name: "bost.ocks.org/mike/selection/"},
+			{type: "out", name: "recursion.org/d3-for-mere-mortals/"}
+		  ]
+		};
+
+		var nodesOut = clusterOut.nodes(rootOut);
+		var linksOut = clusterOut.links(nodesOut);
+
+		var linkOut = svg.selectAll(".link")
+			.data(linksOut)
+		  .enter().append("path")
+			.attr("class", "link")
+			.attr("d", diagonalOut);
+
+		var nodeOut = svg.selectAll(".node")
+			.data(nodesOut)
+		  .enter().append("g")
+			.attr("class", "node")
+			.attr("transform", function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return "translate(" + d.y + "," + d.x + ")";
+					else
+					  return "translate(" + -d.y + "," + d.x + ")";
+				  }
+				  return "translate(0," + d.x + ")";
+				});
+
+		//nodeOut.append("circle")
+		//    .attr("r", 8);
+
+		nodeOut.append("text")
+			.attr("dx", function(d) {
+				  //return d.children ? -8 : 8;
+				  return 0;
+				})
+			.attr("dy", 3)
+			.attr("text-anchor", function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return "end";
+					else
+					  return "begin";
+				  }
+				  return "middle";
+				})
+			.text(function(d) { return d.name; });
+		</script>
+
+    </div>
+    
+    
+    
+    
+</body>
+
+</html>

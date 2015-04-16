@@ -48,6 +48,7 @@
     <Content Include="app\GraphBuilder.js" />
     <Content Include="app\history.html" />
     <Content Include="app\history.js" />
+    <Content Include="app\historyTemplate.html" />
     <Content Include="app\img\frontierblue_icon_16.png" />
     <Content Include="app\img\frontier_icon_128.png" />
     <Content Include="app\img\frontier_icon_16.png" />

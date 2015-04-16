@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<title>HISTORY</title>
+<style>
+
+.graph {
+  background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
+}
+
+.graph line {
+  stroke: white;
+  stroke-width: 2px;
+  opacity: 0.20;
+}
+
+.graph circle {
+  fill: white;
+  opacity: 0.80;
+}
+
+.graph circle:hover {
+  fill: yellow;
+  opacity: 1;
+}
+
+.graph text {
+  fill: yellow;
+  font: 10pt Verdana;
+  //text-anchor: end;
+}
+
+</style>
+<svg class="graph"></svg>
+<script src="d3.min.js"></script>
+<script src="history.js"></script>
