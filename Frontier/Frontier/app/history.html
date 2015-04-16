@@ -1,126 +1,123 @@
-﻿<!doctype html>
-<html i18n-values="dir:textdirection;" id="uber" class="loading">
+﻿<!DOCTYPE html>
+<html id="history_page">
 <head>
-    <meta charset="utf-8">
-    <title i18n-content="History"></title>
-    <link id="favicon" rel="icon" type="image/png" sizes="16x16">
-    <link id="favicon2x" rel="icon" type="image/png" sizes="32x32">
-
-    <link rel="stylesheet" href="chrome://resources/css/chrome_shared.css">
-    <style>
-       /* Copyright (c) 2012 The Chromium Authors. All rights reserved.
-        * Use of this source code is governed by a BSD-style license that can be
-        * found in the LICENSE file. */
-
-        body {
-            /* http://crbug.com/129406 --- horizontal scrollbars flicker when changing
-    * sections. */
-            overflow-x: hidden;
-        }
-
-        #navigation {
-            height: 100%;
-            left: 0;
-            /* This is a hack to prevent the navigation bar from occluding pointer events
-    * from the bottom scroll bar (which shows when one needs to horizontally
-    * scroll). Corresponding padding-top to offset this is in uber_frame.css */
-            margin-top: -20px;
-            position: absolute;
-            /* This value is different from the left value to compensate for the scroll
-    * bar (which is always on and to the right) in RTL. */
-            right: 15px;
-            width: 155px;
-            z-index: 3;
-        }
-
-            #navigation.background {
-                z-index: 1;
-            }
-
-            #navigation.changing-content {
-                -webkit-transition: -webkit-transform 100ms, width 100ms;
-            }
-
-        .iframe-container {
-            -webkit-margin-start: -20px;
-            -webkit-transition: margin 100ms, opacity 100ms;
-            bottom: 0;
-            left: 0;
-            opacity: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 1;
-        }
-
-        .iframe-container.selected {
-            -webkit-margin-start: 0;
-            -webkit-transition: margin 200ms, opacity 200ms;
-            -webkit-transition-delay: 100ms;
-            opacity: 1;
-            z-index: 2;
-        }
-
-        .iframe-container.expanded {
-            left: 0;
-        }
-
-        iframe {
-            border: none;
-            display: block;
-            height: 100%;
-            width: 100%;
-        }
-        .graph {
-            background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
-        }
-
-        .graph line {
-            stroke: white;
-            stroke-width: 2px;
-            opacity: 0.20;
-        }
-
-        .graph circle {
-            fill: white;
-            opacity: 0.80;
-        }
-
-        .graph circle:hover {
-            fill: yellow;
-            opacity: 1;
-        }
-
-        .graph text {
-            fill: yellow;
-            font: 10pt Verdana;
-            //text-anchor: end;
-        }
-
-    </style > 
-    
+    <meta charset="utf-8" />
+    <title>History</title>
+    <link rel="stylesheet" type="text/css" href="forked_links.css" />
+	<script src="d3.min.js"></script>
 </head>
+<body id="history_body">
+    <div id="chrome_heading_container">
+        <h1 id="chrome_heading">Chrome</h1>
+    </div>
+    <div id="history_menu">
+        <ul id="chrome_page_list">
+            <li class="menu_item" id="history_item"><a href="" target="historyFrame">History</a></li>
+            <li class="menu_item" id="extension_item"><a href="extensionsFrame">Extensions</a></li>
+            <li class="menu_item" id="settings_item"><a href="settingsFrame" target="">Settings</a></li>
+            <li class="menu_item" id="about_item"><a href="helpFrame" target="settingsFrame">About</a></li>
+        </ul>
+    </div>
+    <div id="history_workspace">
+        <h1 id="history_heading">History</h1>
+    </div>
+    <div id="history_controls">
+        <button id="clear_browsing">Clear browsing data...</button>
+        <button id="remove_selected">Remove Selected Items</button>
+        <label id="sort_label">Sort by:</label>
+    </div>
+    <div id="results_display">
 
-<body>
 
-    <div id="navigation"><iframe src="chrome://uber-frame/" name="chrome" role="presentation"></iframe></div>
+    </div>
+    <div id="graph_display">
+		<script>
 
-    <div class="iframe-container"
-         i18n-values="id:historyHost; data-url:historyFrameURL;"
-         data-favicon="IDR_HISTORY_FAVICON"></div>
-    <div class="iframe-container"
-         i18n-values="id:extensionsHost; data-url:extensionsFrameURL;"
-         data-favicon="IDR_EXTENSIONS_FAVICON"></div>
-    <div class="iframe-container"
-         i18n-values="id:settingsHost; data-url:settingsFrameURL;"
-         data-favicon="IDR_SETTINGS_FAVICON"></div>
-    <div class="iframe-container"
-         i18n-values="id:helpHost; data-url:helpFrameURL;"
-         data-favicon="IDR_PRODUCT_LOGO_16"></div>
+		var width = 1024;
+		var height = 800;
 
+		var clusterOut = d3.layout.cluster()
+			.size([height, width / 2]);
 
-    <script src="chrome://chrome/strings.js"></script>
-    <script src="chrome://resources/js/i18n_template2.js"></script>
+		var diagonalOut = d3.svg.diagonal()
+			.projection(function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return [d.y, d.x];
+					else
+					  return [-d.y, d.x];
+				  }
+				  return [0,d.x];
+				});
 
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height)
+		  .append("g")
+			.attr("transform", "translate(" + (width / 2) + ",0)");
+
+		var rootOut = {
+		  type: "root",
+		  name: "github.com/mbostock/d3/wiki",
+		  children: [
+			{type: "in", name: "bost.ocks.org/mike/bar/"},
+			{type: "in", name: "bost.ocks.org/mike/selection/"},
+			{type: "in", name: "recursion.org/d3-for-mere-mortals/"},
+			{type: "out", name: "bost.ocks.org/mike/bar/"},
+			{type: "out", name: "bost.ocks.org/mike/selection/"},
+			{type: "out", name: "recursion.org/d3-for-mere-mortals/"}
+		  ]
+		};
+
+		var nodesOut = clusterOut.nodes(rootOut);
+		var linksOut = clusterOut.links(nodesOut);
+
+		var linkOut = svg.selectAll(".link")
+			.data(linksOut)
+		  .enter().append("path")
+			.attr("class", "link")
+			.attr("d", diagonalOut);
+
+		var nodeOut = svg.selectAll(".node")
+			.data(nodesOut)
+		  .enter().append("g")
+			.attr("class", "node")
+			.attr("transform", function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return "translate(" + d.y + "," + d.x + ")";
+					else
+					  return "translate(" + -d.y + "," + d.x + ")";
+				  }
+				  return "translate(0," + d.x + ")";
+				});
+
+		//nodeOut.append("circle")
+		//    .attr("r", 8);
+
+		nodeOut.append("text")
+			.attr("dx", function(d) {
+				  //return d.children ? -8 : 8;
+				  return 0;
+				})
+			.attr("dy", 3)
+			.attr("text-anchor", function(d) {
+				  if (d.type) {
+					if (d.type == "out")
+					  return "end";
+					else
+					  return "begin";
+				  }
+				  return "middle";
+				})
+			.text(function(d) { return d.name; });
+		</script>
+
+    </div>
+    
+    
+    
+    
 </body>
+
 </html>
