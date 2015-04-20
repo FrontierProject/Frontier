@@ -65,6 +65,8 @@
     <Content Include="app\img\Yellow_Small.png" />
     <Content Include="app\jquery-2.1.3.min.js" />
     <Content Include="app\options.html" />
+    <Content Include="app\page_ui.css" />
+    <Content Include="app\page_ui.js" />
     <Content Include="app\script_imports.html" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />

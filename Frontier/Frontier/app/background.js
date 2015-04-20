@@ -7,7 +7,7 @@
 //
 //    return setObj;
 //};
-var activeSession = "";
+
 
 Set.prototype.toArray = function() {
     var arrayObj = [];
@@ -22,8 +22,9 @@ Set.prototype.toArray = function() {
 (function() {
 
 // node objects with urls, titles, etc.
-var sessionArray  = {};
-
+var sessionArray  = [];
+var activeSession = "";
+var activeSessionIndex = 0;
 /*
 var nodes         = {};
 // hyperlink graph
@@ -31,11 +32,20 @@ var forwardLinks = {};
 // transpose of above
 var backLinks    = {};
 */
+if (activeSession == "") {
+    activeSession = "default";
+    sessionArray[activeSession] = {
+        nodes: {},
+        forwardLinks: {},
+        backLinks: {}
+    };
+}
+    
 
 //Set the active session object
 function SetActiveSession(aSession){
     activeSession = aSession;
-    sessionArray[aSession] = {
+    sessionArray[activeSession] = {
         nodes: {},
         forwardLinks: {},
         backLinks: {}
