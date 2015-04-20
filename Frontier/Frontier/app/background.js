@@ -7,6 +7,7 @@
 //
 //    return setObj;
 //};
+var activeSession = "";
 
 Set.prototype.toArray = function() {
     var arrayObj = [];
@@ -21,12 +22,25 @@ Set.prototype.toArray = function() {
 (function() {
 
 // node objects with urls, titles, etc.
-var nodes        = {};
+var sessionArray  = {};
+
+/*
+var nodes         = {};
 // hyperlink graph
 var forwardLinks = {};
 // transpose of above
 var backLinks    = {};
+*/
 
+//Set the active session object
+function SetActiveSession(aSession){
+    activeSession = aSession;
+    sessionArray[aSession] = {
+        nodes: {},
+        forwardLinks: {},
+        backLinks: {}
+    };
+}
 // strip out everything except host and pathname
 function UrlHostPathname(rawUrl) {
     try {
@@ -42,8 +56,8 @@ function ForkedLinks(target) {
     var targetUrlStr = UrlHostPathname(target);
 
     return {
-        forwardLinks: forwardLinks[targetUrlStr] ? forwardLinks[targetUrlStr].toArray() : [],
-        backLinks: backLinks[targetUrlStr] ? backLinks[targetUrlStr].toArray() : []
+        forwardLinks: sessionArray[activeSession].forwardLinks[targetUrlStr] ? sessionArray[activeSession].forwardLinks[targetUrlStr].toArray() : [],
+        backLinks: sessionArray[activeSession].backLinks[targetUrlStr] ? sessionArray[activeSession].backLinks[targetUrlStr].toArray() : []
     };
 };
 
@@ -62,14 +76,14 @@ function AddLink(link, sender) {
         return;
 
     // insert target node
-    if (!(nodes[targetUrlStr])) {
-        nodes[targetUrlStr] = {
+    if (!(sessionArray[activeSession].nodes[targetUrlStr])) {
+        sessionArray[activeSession].nodes[targetUrlStr] = {
             url:    targetUrlStr,
             rawUrl: link.target,
             title:  link.title,
         };
     } else {
-        nodes[targetUrlStr].title = link.title;
+        sessionArray[activeSession].nodes[targetUrlStr].title = link.title;
     }
 
     // timestamp
@@ -77,7 +91,7 @@ function AddLink(link, sender) {
     //    nodes[targetUrlStr].timestamps = [];
     //}
     //nodes[targetUrlStr].timestamps.push(Date.now());
-    nodes[targetUrlStr].timestamp = Date.now();
+    sessionArray[activeSession].nodes[targetUrlStr].timestamp = Date.now();
 
     // screen shot
     //if (!(nodes[targetUrlStr].screenShot)) {
@@ -94,23 +108,23 @@ function AddLink(link, sender) {
         if (sourceUrlStr != targetUrlStr) {
 
             // insert source vertex
-            if (!(nodes[sourceUrlStr])) {
-                nodes[sourceUrlStr] = {
+            if (!(sessionArray[activeSession].nodes[sourceUrlStr])) {
+                sessionArray[activeSession].nodes[sourceUrlStr] = {
                     url:    sourceUrlStr,
                     rawUrl: link.source
                 };
             }
 
-            if (!(forwardLinks[sourceUrlStr])) {
-                forwardLinks[sourceUrlStr] = new Set();
+            if (!(sessionArray[activeSession].forwardLinks[sourceUrlStr])) {
+                sessionArray[activeSession].forwardLinks[sourceUrlStr] = new Set();
             }
-            if (!(backLinks[targetUrlStr])) {
-                backLinks[targetUrlStr] = new Set();
+            if (!(sessionArray[activeSession].backLinks[targetUrlStr])) {
+                sessionArray[activeSession].backLinks[targetUrlStr] = new Set();
             }
 
             // add vertices to the adjacency lists
-            forwardLinks[sourceUrlStr].add(targetUrlStr);
-            backLinks[targetUrlStr].add(sourceUrlStr);
+            sessionArray[activeSession].forwardLinks[sourceUrlStr].add(targetUrlStr);
+            sessionArray[activeSession].backLinks[targetUrlStr].add(sourceUrlStr);
         }
     }
 }
@@ -159,9 +173,9 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         if (blackListedUrls.has(targetUrlStr))
             return;
 
-        if (!(nodes[targetUrlStr])) {
+        if (!(sessionArray[activeSession].nodes[targetUrlStr])) {
             console.log("*** Inserting <" + targetUrlStr + "> in tab listener");
-            nodes[targetUrlStr] = {
+            sessionArray[activeSession].nodes[targetUrlStr] = {
                 url:    targetUrlStr,
                 rawUrl: tab.url
             };
@@ -169,7 +183,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
         // add favicon url to the node
         // now favicon available whenever the graph is rendered by the front-end
-        nodes[targetUrlStr].favIconUrl = favIconUrl;
+        sessionArray[activeSession].nodes[targetUrlStr].favIconUrl = favIconUrl;
     }
 });
 
@@ -180,7 +194,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
         SendResponse(FlattenNodesLinks(nodes, forwardLinks));
     } else if (request.type == "FORKED_LINKS") {
         SendResponse(ForkedLinks(request.url));
+    } else if (request.type == "SET_ACTIVE_SESSION") {
+        activeSession = request.activeSession;
+        //no response required
     }
+    
 });
 
 }());
