@@ -12,107 +12,33 @@
     </div>
     <div id="history_menu">
         <ul id="chrome_page_list">
-            <li class="menu_item" id="history_item"><a href="" target="historyFrame">History</a></li>
+            <li class="menu_item" id="history_item"><a href="">History</a></li>
             <li class="menu_item" id="extension_item"><a href="extensionsFrame">Extensions</a></li>
-            <li class="menu_item" id="settings_item"><a href="settingsFrame" target="">Settings</a></li>
-            <li class="menu_item" id="about_item"><a href="helpFrame" target="settingsFrame">About</a></li>
+            <li class="menu_item" id="settings_item"><a href="settingsFrame">Settings</a></li>
+            <li class="menu_item" id="about_item"><a href="helpFrame">About</a></li>
         </ul>
     </div>
     <div id="history_workspace">
         <h1 id="history_heading">History</h1>
     </div>
     <div id="history_controls">
-        <button id="clear_browsing">Clear browsing data...</button>
-        <button id="remove_selected">Remove Selected Items</button>
+        <button class="control_button" id="clear_browsing">Clear browsing data...</button>
+        <button class="control_button" id="remove_selected">Remove Selected Items</button>
         <label id="sort_label">Sort by:</label>
     </div>
     <div id="results_display">
 
 
     </div>
-    <div id="graph_display">
-		<script>
-
-		var width = 1024;
-		var height = 800;
-
-		var clusterOut = d3.layout.cluster()
-			.size([height, width / 2]);
-
-		var diagonalOut = d3.svg.diagonal()
-			.projection(function(d) {
-				  if (d.type) {
-					if (d.type == "out")
-					  return [d.y, d.x];
-					else
-					  return [-d.y, d.x];
-				  }
-				  return [0,d.x];
-				});
-
-		var svg = d3.select("body").append("svg")
-			.attr("width", width)
-			.attr("height", height)
-		  .append("g")
-			.attr("transform", "translate(" + (width / 2) + ",0)");
-
-		var rootOut = {
-		  type: "root",
-		  name: "github.com/mbostock/d3/wiki",
-		  children: [
-			{type: "in", name: "bost.ocks.org/mike/bar/"},
-			{type: "in", name: "bost.ocks.org/mike/selection/"},
-			{type: "in", name: "recursion.org/d3-for-mere-mortals/"},
-			{type: "out", name: "bost.ocks.org/mike/bar/"},
-			{type: "out", name: "bost.ocks.org/mike/selection/"},
-			{type: "out", name: "recursion.org/d3-for-mere-mortals/"}
-		  ]
-		};
-
-		var nodesOut = clusterOut.nodes(rootOut);
-		var linksOut = clusterOut.links(nodesOut);
-
-		var linkOut = svg.selectAll(".link")
-			.data(linksOut)
-		  .enter().append("path")
-			.attr("class", "link")
-			.attr("d", diagonalOut);
-
-		var nodeOut = svg.selectAll(".node")
-			.data(nodesOut)
-		  .enter().append("g")
-			.attr("class", "node")
-			.attr("transform", function(d) {
-				  if (d.type) {
-					if (d.type == "out")
-					  return "translate(" + d.y + "," + d.x + ")";
-					else
-					  return "translate(" + -d.y + "," + d.x + ")";
-				  }
-				  return "translate(0," + d.x + ")";
-				});
-
-		//nodeOut.append("circle")
-		//    .attr("r", 8);
-
-		nodeOut.append("text")
-			.attr("dx", function(d) {
-				  //return d.children ? -8 : 8;
-				  return 0;
-				})
-			.attr("dy", 3)
-			.attr("text-anchor", function(d) {
-				  if (d.type) {
-					if (d.type == "out")
-					  return "end";
-					else
-					  return "begin";
-				  }
-				  return "middle";
-				})
-			.text(function(d) { return d.name; });
-		</script>
-
+    <div id="graph_controls">
+		<input type="text" id="type_new_session"></input>
+		<button class="control_button" id="add_session">Add Session</button>
+		<select id="add_list"></select>
+		<button class="control_button" id="View">View Session</button>
+	</div>
+	<div id="graph_display">
+		<svg class="graph"></svg>
+		<script src="history.js"></script>
     </div>
     
     

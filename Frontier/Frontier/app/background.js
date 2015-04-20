@@ -7,146 +7,198 @@
 //
 //    return setObj;
 //};
+var activeSession = "";
 
-Set.prototype.toArray = function () {
+Set.prototype.toArray = function() {
     var arrayObj = [];
 
-    this.forEach(function (value) {
+    this.forEach(function(value) {
         arrayObj.push(value);
     });
 
     return arrayObj;
 };
 
-(function () {
+(function() {
 
-    var nodes = {};
-    var forwardLinks = {};
-    var backLinks = {};
+// node objects with urls, titles, etc.
+var sessionArray  = {};
 
-    function ForkedLinks(target) {
-        var targetUrl = new URL(target);
-        var targetUrlStr = targetUrl.host + targetUrl.pathname;
+/*
+var nodes         = {};
+// hyperlink graph
+var forwardLinks = {};
+// transpose of above
+var backLinks    = {};
+*/
 
-        ////var nodesSet = new Set();
-        //var forwardLinksArr = [];
-        //var backLinksArr    = [];
-
-        ////nodesSet.add(nodes[targetUrlStr]);
-
-        //if (forwardLinks[targetUrlStr]) {
-        //    forwardLinks[targetUrlStr].forEach(function(urlStr) {
-        //        //nodesSet.add(nodes[urlStr]);
-        //        forwardLinksArr.push({
-        //            source: nodes[targetUrlStr],
-        //            target: nodes[urlStr]
-        //        });
-        //    });
-        //}
-
-        //if (backLinks[targetUrlStr]) {
-        //    backLinks[targetUrlStr].forEach(function(urlStr) {
-        //        //nodesSet.add(nodes[urlStr]);
-        //        backLinksArr.push({
-        //            source: nodes[urlStr],
-        //            target: nodes[targetUrlStr]
-        //        });
-        //    });
-        //}
-
-        ////return {
-        ////    nodes: nodesSet.toArray(),
-        ////    links: linksArr
-        ////};
-
-        return {
-            forwardLinks: forwardLinks[targetUrlStr] ? forwardLinks[targetUrlStr].toArray() : [],
-            backLinks: backLinks[targetUrlStr] ? backLinks[targetUrlStr].toArray() : []
-        };
+//Set the active session object
+function SetActiveSession(aSession){
+    activeSession = aSession;
+    sessionArray[aSession] = {
+        nodes: {},
+        forwardLinks: {},
+        backLinks: {}
     };
+}
+// strip out everything except host and pathname
+function UrlHostPathname(rawUrl) {
+    try {
+        var url = new URL(rawUrl);
+        return url.host + url.pathname;
+    } catch (e) {
+        return "";
+    }
+}
 
-    function AddLink(link, sender) {
-        var targetUrl = new URL(link.target);
-        var targetUrlStr = targetUrl.host + targetUrl.pathname;
+// url lists needed by front-end script
+function ForkedLinks(target) {
+    var targetUrlStr = UrlHostPathname(target);
 
-        if (!(nodes[targetUrlStr])) {
-            nodes[targetUrlStr] = {
-                url: targetUrlStr,
-                title: link.title
-            };
-        } else {
-            nodes[targetUrlStr].title = link.title;
-        }
+    return {
+        forwardLinks: sessionArray[activeSession].forwardLinks[targetUrlStr] ? sessionArray[activeSession].forwardLinks[targetUrlStr].toArray() : [],
+        backLinks: sessionArray[activeSession].backLinks[targetUrlStr] ? sessionArray[activeSession].backLinks[targetUrlStr].toArray() : []
+    };
+};
 
-        if (link.source.length > 0) {
-            var sourceUrl = new URL(link.source);
-            var sourceUrlStr = sourceUrl.host + sourceUrl.pathname;
+var blackListedUrls = new Set([
+    "www.google.com/webhp",
+    "www.google.com/_/chrome/newtab",
+    "newtab/"
+]);
 
-            if (sourceUrlStr != targetUrlStr) {
-                if (!(nodes[sourceUrlStr])) {
-                    nodes[sourceUrlStr] = {
-                        url: sourceUrlStr
-                    };
-                }
+// add link object graph adjacency lists
+// NOTE: we also store the transpose of the url graph
+function AddLink(link, sender) {
+    var targetUrlStr = UrlHostPathname(link.target);
 
-                if (!(forwardLinks[sourceUrlStr])) {
-                    forwardLinks[sourceUrlStr] = new Set();
-                }
-                if (!(backLinks[targetUrlStr])) {
-                    backLinks[targetUrlStr] = new Set();
-                }
+    if (blackListedUrls.has(targetUrlStr))
+        return;
 
-                forwardLinks[sourceUrlStr].add(targetUrlStr);
-                backLinks[targetUrlStr].add(sourceUrlStr);
-            }
-        }
+    // insert target node
+    if (!(sessionArray[activeSession].nodes[targetUrlStr])) {
+        sessionArray[activeSession].nodes[targetUrlStr] = {
+            url:    targetUrlStr,
+            rawUrl: link.target,
+            title:  link.title,
+        };
+    } else {
+        sessionArray[activeSession].nodes[targetUrlStr].title = link.title;
     }
 
-    function FlattenNodesLinks(nodesObj, linksObj) {
-        var nodesArr = [];
-        var indices = {};
-        var index = 0;
+    // timestamp
+    //if (!(nodes[targetUrlStr].timestamps)) {
+    //    nodes[targetUrlStr].timestamps = [];
+    //}
+    //nodes[targetUrlStr].timestamps.push(Date.now());
+    sessionArray[activeSession].nodes[targetUrlStr].timestamp = Date.now();
 
-        Object.keys(nodesObj).forEach(function (node) {
-            nodesArr.push(nodesObj[node]);
-            indices[node] = index++;
-        });
+    // screen shot
+    //if (!(nodes[targetUrlStr].screenShot)) {
+    //    chrome.tabs.captureVisibleTab(sender.tab.windowId, null, function(dataUrl) {
+    //        nodes[targetUrlStr].screenShot = dataUrl;
+    //    });
+    //}
 
-        var linksArr = [];
+    // check that source URL is a nonempty string
+    if (link.source.length > 0) {
+        var sourceUrlStr = UrlHostPathname(link.source);
 
-        Object.keys(linksObj).forEach(function (sourceUrlStr) {
-            linksObj[sourceUrlStr].forEach(function (targetUrlStr) {
-                linksArr.push({
-                    source: indices[sourceUrlStr],
-                    target: indices[targetUrlStr]
-                });
+        //  check for a self loop
+        if (sourceUrlStr != targetUrlStr) {
+
+            // insert source vertex
+            if (!(sessionArray[activeSession].nodes[sourceUrlStr])) {
+                sessionArray[activeSession].nodes[sourceUrlStr] = {
+                    url:    sourceUrlStr,
+                    rawUrl: link.source
+                };
+            }
+
+            if (!(sessionArray[activeSession].forwardLinks[sourceUrlStr])) {
+                sessionArray[activeSession].forwardLinks[sourceUrlStr] = new Set();
+            }
+            if (!(sessionArray[activeSession].backLinks[targetUrlStr])) {
+                sessionArray[activeSession].backLinks[targetUrlStr] = new Set();
+            }
+
+            // add vertices to the adjacency lists
+            sessionArray[activeSession].forwardLinks[sourceUrlStr].add(targetUrlStr);
+            sessionArray[activeSession].backLinks[targetUrlStr].add(sourceUrlStr);
+        }
+    }
+}
+
+// convert the node set into a list and collapse adjacency list into a list of node indices
+function FlattenNodesLinks(nodesObj, linksObj) {
+    var nodesArr = [];
+    var indices  = {};
+    var index    = 0;
+
+    // convert node object into list and record its index
+    Object.keys(nodesObj).forEach(function(node) {
+        nodesArr.push(nodesObj[node]);
+        indices[node] = index++;
+    });
+
+    var linksArr = [];
+
+    // iterate through each source entry
+    Object.keys(linksObj).forEach(function(sourceUrlStr) {
+        // iterate through each target associated with the current source url
+        linksObj[sourceUrlStr].forEach(function(targetUrlStr) {
+            // NOTE: these objects are serialized into JSON so object references are lost
+            // d3 needs node indices for force directed layout
+            linksArr.push({
+                source: indices[sourceUrlStr],
+                target: indices[targetUrlStr]
             });
         });
+    });
 
-        return {
-            nodes: nodesArr,
-            links: linksArr
-        };
-    }
+    return {
+        nodes: nodesArr,
+        links: linksArr
+    };
+}
 
-    chrome.runtime.onMessage.addListener(function (request, sender, SendResponse) {
-        if (request.type == "ADD_LINK") {
-            SendResponse(AddLink(request, sender));
-        } else if (request.type == "HISTORY_PAGE") {
-            SendResponse(FlattenNodesLinks(nodes, forwardLinks));
-        } else if (request.type == "FORKED_LINKS") {
-            SendResponse(ForkedLinks(request.url));
-        } else if (request.type == "OPEN_HISTORY") {
-            chrome.tabs.create({ "url": "chrome://history", "active": true});
+// workaround for the fact that favicons are not available until the page has finished loading
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    var favIconUrl = changeInfo.favIconUrl || tab.favIconUrl;
+
+    // make sure tab actually has a favicon
+    if (tab.url && favIconUrl) {
+        var targetUrlStr = UrlHostPathname(tab.url);
+
+        if (blackListedUrls.has(targetUrlStr))
+            return;
+
+        if (!(sessionArray[activeSession].nodes[targetUrlStr])) {
+            console.log("*** Inserting <" + targetUrlStr + "> in tab listener");
+            sessionArray[activeSession].nodes[targetUrlStr] = {
+                url:    targetUrlStr,
+                rawUrl: tab.url
+            };
         }
-    });
-    
 
-    chrome.browserAction.onClicked.addListener(function() {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {action: "SHOW_BANNER"});
-        });
-        
-    });
+        // add favicon url to the node
+        // now favicon available whenever the graph is rendered by the front-end
+        sessionArray[activeSession].nodes[targetUrlStr].favIconUrl = favIconUrl;
+    }
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
+    if (request.type == "ADD_LINK") {
+        SendResponse(AddLink(request, sender));
+    } else if (request.type == "HISTORY_PAGE") {
+        SendResponse(FlattenNodesLinks(nodes, forwardLinks));
+    } else if (request.type == "FORKED_LINKS") {
+        SendResponse(ForkedLinks(request.url));
+    } else if (request.type == "SET_ACTIVE_SESSION") {
+        activeSession = request.activeSession;
+        //no response required
+    }
+    
+});
 
 }());
