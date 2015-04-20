@@ -41,6 +41,7 @@
 	"d3.min.js",
 	"page_ui.html",
 	"script_imports.html",
+    "img/frontier_icon_16.png",
     "img/back_icon_16.png",
     "img/forward_icon_16.png",
     "img/close_icon_16.png",
