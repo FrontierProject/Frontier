@@ -246,7 +246,7 @@
     left:156px;
     width: 718px;
 }
-#clear_browsing{
+.control_button{
     display: inline;
     float: left;
     box-shadow: rgba(0, 0, 0, 0.0784314) 0px 1px 0px 0px, rgba(255, 255, 255, 0.74902) 0px 1px 2px 0px inset;
@@ -267,29 +267,21 @@
     margin: 0px 5px 0px 0px;
     outline: rgb(68, 68, 68) none 0px;
     padding: 1px 10px;
+
+}
+#clear_browsing{
+  /*button styling*/
 }
 #remove_selected{
-    display: inline;
-    float: left;
-    box-shadow: rgba(0, 0, 0, 0.0784314) 0px 1px 0px 0px, rgba(255, 255, 255, 0.74902) 0px 1px 2px 0px inset;
-    color: rgb(68, 68, 68);
-    height: 24px;
-    min-height: 24px;
-    min-width: 48px;
-    text-shadow: rgb(240, 240, 240) 0px 1px 0px;
-    white-space: nowrap;
-    width: 164.5625px;
-    align-self: stretch;
-    perspective-origin: 82.28125px 12px;
-    transform-origin: 82.28125px 12px;
-    background: rgb(221, 221, 221) -webkit-linear-gradient(top, rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222)) repeat scroll 0% 0% / auto padding-box border-box;
-    border: 1px solid rgba(0, 0, 0, 0.247059);
-    border-radius: 2px 2px 2px 2px;
-    font: normal normal normal normal 12px/normal 'Segoe UI', Tahoma, sans-serif;
-    margin: 0px 5px 0px 0px;
-    outline: rgb(68, 68, 68) none 0px;
-    padding: 1px 10px;
+    /*button styling*/
 }
+#type_new_session{
+    display: inline;
+}
+#add_list{
+    display: inline;
+}
+
 #sort_label{
     display: inline;
     float: right;
@@ -301,13 +293,22 @@
     top: 93px;
     left: 156px;
     height: 100%;
-    width: 738px;
+    width: 580px;
 }
 #graph_display{
     display: block;
     position: absolute;
-    top: 93px;
+    top: 133px;
     left: 738px;
     height: 100%;
-    width: 738px;;
+    width: 738px;
 }
+#graph_controls{
+    display: block;
+    position: absolute;
+    top: 95px;
+    left: 738px;
+    width: 738px;
+    height: 40px;
+}
+
