@@ -41,9 +41,7 @@
     <Content Include="app\background.js" />
     <Content Include="app\content_script.js" />
     <Content Include="app\d3.min.js" />
-    <Content Include="app\forked_links.html" />
     <Content Include="app\forked_links.css" />
-    <Content Include="app\forked_links.js" />
     <Content Include="app\Graph.js" />
     <Content Include="app\GraphBuilder.js" />
     <Content Include="app\history.html" />
