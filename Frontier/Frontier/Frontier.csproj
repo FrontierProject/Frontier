@@ -54,6 +54,7 @@
     <Content Include="app\img\Green_Large.png" />
     <Content Include="app\img\Green_Medium.png" />
     <Content Include="app\img\Green_Small.png" />
+    <Content Include="app\img\pending.png" />
     <Content Include="app\img\Red_Large.png" />
     <Content Include="app\img\Red_Medium.png" />
     <Content Include="app\img\Red_Small.png" />

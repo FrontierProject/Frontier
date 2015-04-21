@@ -1,10 +1,10 @@
 chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
     //var pre = document.getElementById("links");
     //pre.textContent = JSON.stringify(response.links, null, 2);
-
     
-    var width = 1268,
-        height = 900;
+    
+    var width = 600,
+        height = 578;
 
     var force = d3.layout.force()
         //.gravity(0.1)
@@ -19,15 +19,14 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
     //.on("dragstart", function() { d.fixed = true; });
 
     var graph = d3.select(".graph")
-        .attr("width", "100%")
-        .attr("height", "100px");
+        .attr("width", 600)
+        .attr("height", 578);
 
     graph.append("path")
         .attr("stroke", "black")
-        .attr("stroke-width", "5")
-        .attr("stroke-dasharray", "5,5")
+        .attr("stroke-width", "1")
         .attr("fill", "none")
-        .attr("d", "M0 0 L0 " + height + " " + width + " " + height + " " + width + " 0 Z")
+        .attr("d", "M 0 0 L 0 " + height + " " + width + " " + height + " " + width + " 0 Z")
 
     var link = graph.selectAll(".link")
         .data(response.links)
@@ -80,4 +79,24 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
     });
 
+    $("#history_item").click(function () {
+        chrome.runtime.sendMessage({
+            type: "OPEN_HISTORY"
+        });
+    });
+    $("#extension_item").click(function () {
+        chrome.runtime.sendMessage({
+            type: "OPEN_EXTENSIONS"
+        });
+    });
+    $("#settings_item").click(function () {
+        chrome.runtime.sendMessage({
+            type: "OPEN_SETTINGS"
+        });
+    });
+    $("#about_item").click(function () {
+        chrome.runtime.sendMessage({
+            type: "OPEN_ABOUT"
+        });
+    });
 });

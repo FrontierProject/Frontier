@@ -18,8 +18,9 @@
 }
 
 #frontier_banner span {
-    text-align: middle;
-    margin: 10px 10px 0px 10px;
+    text-align:center;
+    vertical-align:central;
+    margin: 5px 10px 0px 10px;
     display: inline-block;
     float: right;
 }
@@ -104,7 +105,7 @@
 
 #frontier_banner ul li:hover > ul {
     visibility: visible;
-    border-bottom: 1px solid #333333;
+    /*border-bottom: 1px solid #333333;*/
 }
 
 #frontier_banner img {
