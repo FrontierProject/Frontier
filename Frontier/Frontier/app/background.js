@@ -58,6 +58,9 @@ function UrlHostPathname(rawUrl) {
 // url lists needed by front-end script
 function ForkedLinks(target) {
     var targetUrlStr = UrlHostPathname(target);
+    var forwardLinks = sessions[currentSession].forwardLinks;
+    var backLinks    = sessions[currentSession].backLinks;
+    
 
     return {
         forwardLinks: forwardLinks[targetUrlStr] ? forwardLinks[targetUrlStr].toArray() : [],
