@@ -78,7 +78,7 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         node
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
     });
-
+    /*
     $("#history_item").click(function () {
         chrome.runtime.sendMessage({
             type: "OPEN_HISTORY"
@@ -98,5 +98,20 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         chrome.runtime.sendMessage({
             type: "OPEN_ABOUT"
         });
+    });*/
+    $(document).ready(function () {
+        $("#add_session_button").click(function () {
+            chrome.runtime.sendMessage({
+                type: "ADD_SESSION",
+                sessionName: $("#type_new_session").text
+            });
+        });
+        $("#view_button").click(function () {
+            chrome.runtime.sendMessage({
+                type: "SWITCH_SESSION",
+                sessionName: $("#session_list option:selected").text
+            });
+        });
     });
+
 });
