@@ -8,7 +8,6 @@
 //    return setObj;
 //};
 
-
 Set.prototype.toArray = function() {
     var arrayObj = [];
 
@@ -21,13 +20,30 @@ Set.prototype.toArray = function() {
 
 (function() {
 
-// node objects with urls, titles, etc.
-var nodes         = {};
-// hyperlink graph
-var forwardLinks = {};
-// transpose of above
-var backLinks    = {};
+var sessions = {};
 
+function AddSession(sessionName) {
+    if (!(sessions[sessionName])) {
+        sessions[sessionName] = {
+            // node objects with urls, titles, etc.
+            // Node Object {
+            // String url -- stripped url with host and pathname only
+            // String rawUrl -- url given by document.URL
+            // String title (optional) -- title given by document.title
+            // String favIconUrl (optional) -- favicon url, only available once page is fully loaded
+            // }
+            nodes:        {},
+            // hyperlink graph
+            forwardLinks: {},
+            // transpose of above
+            backLinks:    {}
+        };
+    }
+}
+
+const DEFAULT_SESSION = "$$default$$";
+var currentSession = DEFAULT_SESSION;
+AddSession(DEFAULT_SESSION);
 
 // strip out everything except host and pathname
 function UrlHostPathname(rawUrl) {
@@ -63,6 +79,8 @@ function AddLink(link, sender) {
     if (blackListedUrls.has(targetUrlStr))
         return;
 
+    var nodes = sessions[currentSession].nodes;
+
     // insert target node
     if (!(nodes[targetUrlStr])) {
         nodes[targetUrlStr] = {
@@ -79,14 +97,9 @@ function AddLink(link, sender) {
     //    nodes[targetUrlStr].timestamps = [];
     //}
     //nodes[targetUrlStr].timestamps.push(Date.now());
-    nodes[targetUrlStr].timestamp = Date.now();
-
-    // screen shot
-    //if (!(nodes[targetUrlStr].screenShot)) {
-    //    chrome.tabs.captureVisibleTab(sender.tab.windowId, null, function(dataUrl) {
-    //        nodes[targetUrlStr].screenShot = dataUrl;
-    //    });
-    //}
+    var date = new Date();
+    nodes[targetUrlStr].hours   = date.getHours();
+    nodes[targetUrlStr].minutes = date.getMinutes();
 
     // check that source URL is a nonempty string
     if (link.source.length > 0) {
@@ -94,6 +107,8 @@ function AddLink(link, sender) {
 
         //  check for a self loop
         if (sourceUrlStr != targetUrlStr) {
+            var forwardLinks = sessions[currentSession].forwardLinks;
+            var backLinks    = sessions[currentSession].backLinks;
 
             // insert source vertex
             if (!(nodes[sourceUrlStr])) {
@@ -150,8 +165,9 @@ function FlattenNodesLinks(nodesObj, linksObj) {
     };
 }
 
-// workaround for the fact that favicons are not available until the page has finished loading
+// workaround: favicons are not available until the page has finished loading
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    var nodes      = sessions[currentSession].nodes;
     var favIconUrl = changeInfo.favIconUrl || tab.favIconUrl;
 
     // make sure tab actually has a favicon
@@ -177,9 +193,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
     if (request.type == "ADD_LINK") {
-        SendResponse(AddLink(request, sender));
+        //SendResponse(AddLink(request, sender));
+        AddLink(request, sender);
     } else if (request.type == "HISTORY_PAGE") {
-        SendResponse(FlattenNodesLinks(nodes, forwardLinks));
+        SendResponse(FlattenNodesLinks(sessions[currentSession].nodes, sessions[currentSession].forwardLinks));
     } else if (request.type == "FORKED_LINKS") {
         SendResponse(ForkedLinks(request.url));
     } else if (request.type == "OPEN_HISTORY") {
