@@ -1,6 +1,5 @@
-﻿$(window).load(function(){
-    $(document).ready((function (){
-   
+﻿    $(document).ready((function (){
+    
     //Tested code here: http://jsfiddle.net/mvCUH/198/
 
         var tmplt = "<li class=\"list_item\"><p>{{url}}</p></li>";
@@ -264,6 +263,9 @@
         
         // Un-hides the banner
         function showBanner() {
+            if (document.getElementById('frontier_banner') == null)
+                rightBanner();
+            
             $("#frontier_banner").slideDown(function() {
                 clearTimeout(hideBanner);
                 hideBanner = setTimeout(function() {
@@ -280,4 +282,3 @@
         });
         
     }()));
-});
