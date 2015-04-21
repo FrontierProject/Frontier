@@ -201,6 +201,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
         SendResponse(ForkedLinks(request.url));
     } else if (request.type == "OPEN_HISTORY") {
         chrome.tabs.create({ 'url': 'chrome://history', 'active': true});
+    } else if (request.type == "ADD_SESSION") {
+        if (request.sessionName) {
+            var sessionName = request.sessionName;
+            if (!sessions[sessionName]) {
+                AddSession(sessionName);
+            }
+            currentSession = sessionName;
+        }
+    } else if (request.type == "SWITCH_SESSION") {
+        if (request.sessionName) {
+            currentSession = request.sessionName;
+        }
     }
     
 });
