@@ -58,13 +58,36 @@ function UrlHostPathname(rawUrl) {
 // url lists needed by front-end script
 function ForkedLinks(target) {
     var targetUrlStr = UrlHostPathname(target);
+    var nodes        = sessions[currentSession].nodes;
     var forwardLinks = sessions[currentSession].forwardLinks;
     var backLinks    = sessions[currentSession].backLinks;
-    
+
+    var forwardArr = [];
+    if (forwardLinks[targetUrlStr]) {
+        forwardLinks[targetUrlStr].forEach(function(link) {
+            if (nodes[link]) {
+                forwardArr.push(nodes[link]);
+            }
+        });
+    }
+
+    var backArr    = [];
+    if (backLinks[targetUrlStr]) {
+        backLinks[targetUrlStr].forEach(function(link) {
+            if (nodes[link]) {
+                backArr.push(nodes[link]);
+            }
+        });
+    }
+
+    //return {
+    //    forwardLinks: forwardLinks[targetUrlStr] ? forwardLinks[targetUrlStr].toArray() : [],
+    //    backLinks: backLinks[targetUrlStr] ? backLinks[targetUrlStr].toArray() : []
+    //};
 
     return {
-        forwardLinks: forwardLinks[targetUrlStr] ? forwardLinks[targetUrlStr].toArray() : [],
-        backLinks: backLinks[targetUrlStr] ? backLinks[targetUrlStr].toArray() : []
+        forwardLinks: forwardArr,
+        backLinks:    backArr
     };
 };
 
