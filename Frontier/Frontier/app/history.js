@@ -4,7 +4,7 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
     
     
     var width = 600,
-        height = 578;
+        height = 600;
 
     var force = d3.layout.force()
         //.gravity(0.1)
@@ -20,7 +20,8 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
 
     var graph = d3.select(".graph")
         .attr("width", 600)
-        .attr("height", 578);
+        .attr("height", 600)
+        .attr("stroke-width", 0);
 
     graph.append("path")
         .attr("stroke", "black")
