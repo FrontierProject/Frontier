@@ -4,6 +4,8 @@
 
         var tmplt = "<li class=\"list_item\"><p>{{url}}</p></li>";
         
+        const DEFAULT_FAVICON_URL = "http://www.google.com/images/icons/product/chrome-32.png";
+        
         var forwardData = "";
         var backData = "";
         
@@ -93,20 +95,27 @@
                 .attr("src", chrome.extension.getURL("img/forward_icon_16.png"));
             
             // Add all of the forward links
-            forwardLinkButton.append("ul")
+            var forwardLinkList = forwardLinkButton.append("ul")
                 .selectAll("li")
                 .data(forwardLinks)
                 .enter()
                 .append("li")
-                .append("a")
+            
+            forwardLinkList.append("img")
+                .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
+                .attr("style", "margin: 5px; display: inline-block;")
+                .attr("height", "16")
+                .attr("width", "16");
+            
+            forwardLinkList.append("a")
                 .attr("href", function(link) { 
                     if (window.location.protocol == "https:")
-                        return "https://" + link;
+                        return "https://" + link.url;
                     else
-                        return "http://" + link;
+                        return "http://" + link.url;
                 })
-                .attr("target", "_blank")
-                .text(function(link) { return link; });
+                .attr("style", "display: inline-block")
+                .text(function(link) { return link.title || link.url; });
             
             // Add the back link image
             var backLinkButton = bannerLinks.append("li")
@@ -116,20 +125,26 @@
                 .attr("src", chrome.extension.getURL("img/back_icon_16.png"));
             
             // Add all of the back links
-            backLinkButton.append("ul")
+            var backLinkList = backLinkButton.append("ul")
                 .selectAll("li")
                 .data(backLinks)
                 .enter()
-                .append("li")
-                .append("a")
+                .append("li");
+            
+            backLinkList.append("img")
+                .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
+                .attr("style", "margin: 5px; display: inline-block;")
+                .attr("height", "16")
+                .attr("width", "16");
+            
+            backLinkList.append("a")
                 .attr("href", function(link) { 
                     if (window.location.protocol == "https:")
-                        return "https://" + link;
+                        return "https://" + link.url;
                     else
-                        return "http://" + link;
+                        return "http://" + link.url;
                 })
-                .attr("target", "_blank")
-                .text(function(link) { return link; });
+                .text(function(link) { return link.title || link.url; });
             
             bannerContainer.append("span")
                 .text("FRONTIER");
@@ -179,12 +194,16 @@
                 .append("a")
                 .attr("href", function(link) { 
                     if (window.location.protocol == "https:")
-                        return "https://" + link;
+                        return "https://" + link.url;
                     else
-                        return "http://" + link;
+                        return "http://" + link.url;
                 })
-                .attr("target", "_blank")
-                .text(function(link) { return link; });
+                .text(function(link) { 
+                    if (link.title)
+                        return link.title; 
+                    else
+                        return link.url;
+                });
                 
             var forwardLinkButton = bannerLinks.append("li")
                 .attr("id", "frontier_forwardlinks");
@@ -202,12 +221,17 @@
                 .append("a")
                 .attr("href", function(link) { 
                     if (window.location.protocol == "https:")
-                        return "https://" + link;
+                        return "https://" + link.url;
                     else
-                        return "http://" + link;
+                        return "http://" + link.url;
                 })
                 .attr("target", "_blank")
-                .text(function(link) { return link; });
+                .text(function(link) { 
+                    if (link.title)
+                        return link.title; 
+                    else
+                        return link.url;
+                });
                 
             var historyButton = bannerLinks.append("li")
                 .attr("id", "frontier_history_button");

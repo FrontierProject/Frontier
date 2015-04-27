@@ -90,9 +90,9 @@
 }
 
 #frontier_banner ul ul li a {
-    margin: 5px 5px 5px 10px;
+    margin: 5px 5px 5px 0px;
     display: inline-block;
-    max-width: 184px;
+    max-width: 168px;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
