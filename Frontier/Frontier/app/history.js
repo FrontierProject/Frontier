@@ -20,12 +20,11 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
 
     var graph = d3.select(".graph")
         .attr("width", 600)
-        .attr("height", 600)
-        .attr("stroke-width", 0);
+        .attr("height", 600);
 
     graph.append("path")
         .attr("stroke", "black")
-        .attr("stroke-width", "1")
+        .attr("stroke-width", "0")
         .attr("fill", "none")
         .attr("d", "M 0 0 L 0 " + height + " " + width + " " + height + " " + width + " 0 Z")
 
@@ -100,19 +99,6 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
             type: "OPEN_ABOUT"
         });
     });*/
-    $(document).ready(function () {
-        $("#add_session_button").click(function () {
-            chrome.runtime.sendMessage({
-                type: "ADD_SESSION",
-                sessionName: $("#type_new_session").text
-            });
-        });
-        $("#view_button").click(function () {
-            chrome.runtime.sendMessage({
-                type: "SWITCH_SESSION",
-                sessionName: $("#session_list option:selected").text
-            });
-        });
-    });
+    
 
 });
