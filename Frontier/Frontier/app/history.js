@@ -35,7 +35,9 @@ $(document).ready((function () {
         var link = graph.selectAll(".link")
             .data(response.links)
             .enter()
-            .append("line");
+            .append("line")
+            .attr("stroke", "gray")
+            .attr("stroke-width", "2px");
 
         var node = graph.selectAll(".node")
             .data(response.nodes)
