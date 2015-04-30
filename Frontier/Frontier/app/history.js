@@ -25,7 +25,7 @@ $(document).ready((function () {
 
         graph.append("path")
             .attr("stroke", "black")
-            .attr("stroke-width", "1")
+            .attr("stroke-width", "0")
             .attr("fill", "none")
             .attr("d", "M 0 0 L 0 " + height + " " + width + " " + height + " " + width + " 0 Z");
 
