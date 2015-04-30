@@ -1,7 +1,8 @@
 ﻿    $(document).ready((function (){
     
     //Tested code here: http://jsfiddle.net/mvCUH/198/
-
+        
+        
         var tmplt = "<li class=\"list_item\"><p>{{url}}</p></li>";
         
         const DEFAULT_FAVICON_URL = "http://www.google.com/images/icons/product/chrome-32.png";
@@ -167,8 +168,7 @@
         }
         
         // Injects banner into current page
-        function addBanner()
-        {
+        function addBanner() {
             // Appends the div
             var bannerContainer = d3.select("body").append("div")
                 .attr("id", "frontier_banner")
@@ -299,9 +299,11 @@
         }
         
         // Clicking on the frontier logo shows the banner
-        chrome.runtime.onMessage.addListener(function (request) {
+        chrome.runtime.onMessage.addListener(function (request, sender, SendResponse) {
             if (request.action == "SHOW_BANNER") {
                 showBanner();
+            } else if (request.action == "GET_URL") {
+                SendResponse({url: document.URL});
             }
         });
         

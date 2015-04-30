@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    background: repeating-linear-gradient(#111111, #000000);
+}
+
+body div {
+    height: 100%;
+    display: block;
+}
+
+#frontier_banner {
+    margin: 2px 2px 2px 2px;
+    color: white;
+    font-weight: bold;
+    
+    width: 244px;
+    height: 32px;
+    
+    opacity: .8;
+}
+
+#frontier_banner span {
+    text-align: center;
+    vertical-align: center;
+    font-family: 'Economica', sans-serif;
+    font-size: 1.625em;
+    font-weight: 700;
+    padding: 5px 10px 0px 10px;
+    display: inline-block;
+    float: right;
+}
+
+#frontier_banner ul, #frontier_banner li {
+    list-style-type: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#frontier_banner ul {
+    float: right;
+    display: inline;
+    position: relative;
+}
+
+#frontier_banner ul li {
+    float: right;
+    min-height: 1px;
+    vertical-align: middle;
+    display: block;
+    cursor: pointer;
+}
+
+#frontier_banner ul li.hover,
+#frontier_banner ul li:hover {
+    background: repeating-linear-gradient(#555555, #444444);
+}
+
+#frontier_banner ul li ul {
+    display: none;
+    font-size: 0;
+    position: absolute;
+    margin-bottom: 2px;
+    top: 100%;
+    right: 0;
+    width: 244px;
+}
+
+#frontier_banner ul ul li {
+    background: repeating-linear-gradient(#111111, #000000);
+    float: none;
+    display: inline-block;
+    font-weight: normal;
+    overflow: hidden;
+    border-top: 1px solid #333333;
+}
+
+#frontier_banner ul > li > ul > li:hover {
+    background: repeating-linear-gradient(#555555, #444444);
+    cursor: pointer;
+}
+
+#frontier_banner ul ul li a {
+    margin: 5px;
+    display: inline-block;
+    max-width: 205px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+}
+
+#frontier_banner ul li:hover > ul {
+    display: inline-block;
+    /*border-bottom: 1px solid #333333;*/
+}
+
+#frontier_banner img {
+    display: block;
+    text-decoration: none;
+    
+    margin: 8px 8px;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Economica'), local('Economica-Regular'), url(https://fonts.gstatic.com/s/economica/v4/ivOlup5oBnODGd64nVDAFBJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Economica'), local('Economica-Regular'), url(https://fonts.gstatic.com/s/economica/v4/jObgDQiPUtmACAaaK3pMG1tXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Economica Bold'), local('Economica-Bold'), url(https://fonts.gstatic.com/s/economica/v4/UK4l2VEpwjv3gdcwbwXE9D0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Economica Bold'), local('Economica-Bold'), url(https://fonts.gstatic.com/s/economica/v4/UK4l2VEpwjv3gdcwbwXE9Ogdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@-webkit-keyframes forwardmove {
+    from { right: -250px; }
+    to { right: 20px; }
+}
+
+@-webkit-keyframes backmove {
+    from { left: -250px; }
+    to { left: 20px; }
+}
