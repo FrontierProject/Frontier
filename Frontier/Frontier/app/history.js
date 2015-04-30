@@ -4,7 +4,7 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
     
     
     var width = 600,
-        height = 578;
+        height = 600;
 
     var force = d3.layout.force()
         //.gravity(0.1)
@@ -20,11 +20,11 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
 
     var graph = d3.select(".graph")
         .attr("width", 600)
-        .attr("height", 578);
+        .attr("height", 600);
 
     graph.append("path")
         .attr("stroke", "black")
-        .attr("stroke-width", "1")
+        .attr("stroke-width", "0")
         .attr("fill", "none")
         .attr("d", "M 0 0 L 0 " + height + " " + width + " " + height + " " + width + " 0 Z")
 
@@ -78,7 +78,7 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         node
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
     });
-
+    /*
     $("#history_item").click(function () {
         chrome.runtime.sendMessage({
             type: "OPEN_HISTORY"
@@ -98,5 +98,7 @@ chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         chrome.runtime.sendMessage({
             type: "OPEN_ABOUT"
         });
-    });
+    });*/
+    
+
 });

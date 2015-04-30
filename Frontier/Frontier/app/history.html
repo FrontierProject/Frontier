@@ -3,25 +3,106 @@
 <head>
     <meta charset="utf-8" />
     <title>History</title>
-    <link rel="stylesheet" type="text/css" href="forked_links.css" />
-	<script src="d3.min.js"></script>
+    <script src="jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="materialize.min.css" />
+	<script src="materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="history_ui.css" />
+    <script src="d3.min.js"></script>
 </head>
-<body id="history_body">
-    <div id="chrome_heading_container">
+<body id="">
+    <!--<div id="chrome_heading_container">
         <h1 id="chrome_heading">Chrome</h1>
     </div>
-	<div id = "search_controls">
+     -->
+	<!--<div id = "search_controls">
 		<input type="text" id="search_history"></input>
 		<button class="control_button" id="search_button">Search</button>
-	</div>
-    <div id="history_menu">
-        <ul id="chrome_page_list">
-            <li class="menu_item" id="history_item"><a href="">History</a></li>
-            <li class="menu_item" id="extension_item"><a href="extensionsFrame">Extensions</a></li>
-            <li class="menu_item" id="settings_item"><a href="settingsFrame">Settings</a></li>
-            <li class="menu_item" id="about_item"><a href="helpFrame">About</a></li>
-        </ul>
+	</div>-->
+    <nav class="white" role="navigation">
+        <div class="nav-wrapper" id="history_menu">
+            
+            <ul class="side-nav" id="chrome_page_list" style="left: 0px;">
+                <li id="page_title brand-logo"><a href="#" class="grey-text text-darken-2">Chrome://History</a></li>
+                <li class="active" id="history_item"><a href="">History</a></li>
+                <li class="" id="extension_item"><a href="extensionsFrame">Extensions</a></li>
+                <li class="" id="settings_item"><a href="settingsFrame">Settings</a></li>
+                <li class="" id="about_item"><a href="helpFrame">About</a></li>
+            </ul>
+        
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row" id="controls">
+            <div class="section col s6 grid-example" id="results_controls">
+                <button class="btn waves-effect waves-light">Clear browsing data...</button>
+                <button class="btn waves-effect waves-light">Remove selected items</button>
+            </div>
+
+            <div class="section col s6 grid-example" id="session_controls">
+                <form name="new_session_form">
+                    <div class="input-field left col s4 grid-example" id="new_session_textbox">
+                        <input id="new_session" type="text" class="validate" />
+                        <label for="new_session">New Session</label>
+                    </div>
+                    <a class="btn waves-effect waves-light col s2 grid-example" href="javascript: addNewSession()" name="new_session_action">
+                        Add
+                        <i class="mdi-content-send right"></i>
+                    </a>
+                </form>
+                <form name="set_session_form">
+                    <div class="input-field col s4 grid-example">
+                        <a class="dropdown-button btn" href="#" data-activates="session_dropdown">Active Session<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                        <ul id="session_dropdown" class="dropdown-content">
+                            <li><a href="#">one</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">two</a></li>
+                            <li><a href="#">three</a></li>
+                        </ul>
+                    </div>
+                    <a class="btn waves-effect waves-light col s2 grid-example" href="javascript: setActiveSesison()" name="active_session_action">
+                        Set
+                        <i class="mdi-content-send right"></i>
+                    </a>
+                </form>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-panel red col s4 grid-example" id="history_results">
+
+
+            </div>
+            <div class="card-panel grey lighten-2 col offset-s2 s6 grid-example" id="graph">
+                <svg class="graph"></svg>
+                <script src="history.js"></script>
+            </div>
+        </div>
     </div>
+
+    <script type="text/javascript">
+        function addNewSession() {
+            if (document.new_session_form.onsubmit &&
+            !document.new_session_form.onsubmit()) {
+                chrome.runtime.sendMessage({
+                    type: "ADD_SESSION",
+                    sessionName: $('[name=new_session_form]').serializeArray().value
+                });
+            }
+            document.new_session_form.submit();
+        }
+        function setActiveSession() {
+            if (document.set_session_form.onsubmit &&
+                !document.set_session_form.onsubmit()) {
+                chrome.runtime.sendMessage({
+                    type: "SWITCH_SESSION",
+                    sessionName: $('[name=set_session_form]').serializeArray().value
+                });
+            }
+            document.set_session_form.submit();
+        }
+        
+    </script>
+    <!--
     <div id="history_workspace">
         <h1 id="history_heading">History</h1>
     </div>
@@ -30,120 +111,21 @@
         <button class="control_button" id="remove_selected">Remove Selected Items</button>
     </div>
     <div id="results_display">
-		<div class="under_construction">
-			<img src="img/pending.png" alt="Pending Emoji" height="42" width="42">
-			<label>Coming Soon!</label>
-		</div>
-		<li id="LI_1">
-			<div id="DIV_2">
-				<div id="DIV_3">
-					<input type="checkbox" id="INPUT_4" tabindex="-1" /><span id="SPAN_5">12:21 PM</span>
-					<button id="BUTTON_6">
-					</button>
-					<div id="DIV_7">
-						<div id="DIV_8">
-							<a href="https://developer.chrome.com/extensions/history" id="id-17" target="_top" title="chrome.history - Google Chrome" column-type="title" tabindex="0">chrome.history - Google Chrome</a>
-						</div>
-						<div id="DIV_10">
-							www.google.com
-						</div>
-					</div>
-					<button value="Open action menu" id="BUTTON_11">
-					</button>
-				</div>
-			</div>
-		</li>
-		<li id="LI_1">
-			<div id="DIV_2">
-				<div id="DIV_3">
-					<input type="checkbox" id="INPUT_4" tabindex="-1" /><span id="SPAN_5">12:21 PM</span>
-					<button id="BUTTON_6">
-					</button>
-					<div id="DIV_7">
-						<div id="DIV_8">
-							<a href="https://developer.chrome.com/extensions/override" id="id-18" target="_top" title="Override Pages - Google Chrome" column-type="title" tabindex="0">Override Pages - Google Chrome</a>
-						</div>
-						<div id="DIV_10">
-							www.google.com
-						</div>
-					</div>
-					<button value="Open action menu" id="BUTTON_11">
-					</button>
-				</div>
-			</div>
-		</li>
-		<li id="LI_1">
-			<div id="DIV_2">
-				<div id="DIV_3">
-					<input type="checkbox" id="INPUT_4" tabindex="-1" /><span id="SPAN_5">12:21 PM</span>
-					<button id="BUTTON_6">
-					</button>
-					<div id="DIV_7">
-						<div id="DIV_8">
-							<a href="https://developer.chrome.com/extensions/manifest" id="id-19" target="_top" title="Manifest File Format - Google Chrome" column-type="title" tabindex="0">Manifest File Format - Google Chrome</a>						</div>
-						<div id="DIV_10">
-							www.google.com
-						</div>
-					</div>
-					<button value="Open action menu" id="BUTTON_11">
-					</button>
-				</div>
-			</div>
-		</li>
-		<li id="LI_1">
-			<div id="DIV_2">
-				<div id="DIV_3">
-					<input type="checkbox" id="INPUT_4" tabindex="-1" /><span id="SPAN_5">12:21 PM</span>
-					<button id="BUTTON_6">
-					</button>
-					<div id="DIV_7">
-						<div id="DIV_8">
-							<a href="https://developer.chrome.com/extensions/background_pages" id="id-30" target="_top" title="Background Pages - Google Chrome" column-type="title" tabindex="0">Background Pages - Google Chrome</a>						</div>
-						<div id="DIV_10">
-							www.google.com
-						</div>
-					</div>
-					<button value="Open action menu" id="BUTTON_11">
-					</button>
-				</div>
-			</div>
-		</li>
-		<li id="LI_1">
-			<div id="DIV_2">
-				<div id="DIV_3">
-					<input type="checkbox" id="INPUT_4" tabindex="-1" /><span id="SPAN_5">12:21 PM</span>
-					<button id="BUTTON_6">
-					</button>
-					<div id="DIV_7">
-						<div id="DIV_8">
-							<a href="http://stackoverflow.com/questions/19787868/create-an-associative-array-in-jquery" id="id-44" target="_top" title="javascript - create an associative array in jquery - Stack Overflow" column-type="title" tabindex="0">javascript - create an associative array in jquery - Stack Overflow</a>						</div>
-						<div id="DIV_10">
-							www.google.com
-						</div>
-					</div>
-					<button value="Open action menu" id="BUTTON_11">
-					</button>
-				</div>
-			</div>
-		</li>
-
+		
     </div>
     <div id="graph_controls">
 		<input type="text" id="type_new_session"></input>
 		<button class="control_button" id="add_session_button">Add Session</button>
 		<select id="session_list">
-			<option value="research">Research</option>
-			<option value="shopping_for_laptop">Shopping for Laptop</option>
-			<option value="apartments">Apartments</option>
-			<option value="facebook">Facebook</option>
+			<option value="research">Default</option>
 		</select>
 		<button class="control_button" id="view_button">View Session</button>
 	</div>
 	<div id="graph_display">
-		<svg class="graph"></svg>
+		<!--<svg class="graph"></svg>
 		<script src="history.js"></script>
     </div>
-    
+    -->
     
     
     
