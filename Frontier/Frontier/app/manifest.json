@@ -51,7 +51,8 @@
 
   "browser_action": {
 	"default_title": "Frontier",
-    "default_icon": "img/frontier_icon_16.png"
+    "default_icon": "img/frontier_icon_16.png",
+    "default_popup": "popup.html"
   },
 
   "chrome_url_overrides": {

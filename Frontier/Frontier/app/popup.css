@@ -72,7 +72,15 @@ body div {
     display: inline-block;
     font-weight: normal;
     overflow: hidden;
+    max-height: 26px;
+    width: 100%;
     border-top: 1px solid #333333;
+}
+
+#frontier_banner ul ul li img {
+    display: inline-block;
+    position: relative;
+    float: left;
 }
 
 #frontier_banner ul > li > ul > li:hover {
@@ -80,15 +88,30 @@ body div {
     cursor: pointer;
 }
 
-#frontier_banner ul ul li a {
+#frontier_banner ul ul li div {
     margin: 5px;
     display: inline-block;
-    max-width: 205px;
+    width: 100%;
+    height: 100%;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
     font-size: 12px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+}
+
+#frontier_banner ul ul li div span {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    vertical-align: bottom;
+    padding: 0px;
+    float: left;
+    max-width: 210px;
     overflow: hidden;
     text-overflow: ellipsis;
     -ms-text-overflow: ellipsis;

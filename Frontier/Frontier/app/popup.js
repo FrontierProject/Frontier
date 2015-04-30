@@ -15,21 +15,23 @@ $(document).ready((function () {
             .selectAll("li")
             .data(backLinks)
             .enter()
-            .append("li");
+            .append("li")
+            .append("div")
         
-        backLinkList.append("img")
-            .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
-            .attr("style", "margin: 5px 5px 5px 8px; display: inline-block;")
-            .attr("height", "16")
-            .attr("width", "16");
-        
-        backLinkList.append("a")
-            .attr("href", function(link) { 
+        backLinkList.attr("href", function(link) { 
                 if (window.location.protocol == "https:")
                     return "https://" + link.url;
                 else
                     return "http://" + link.url;
-            })
+            });
+        
+        backLinkList.append("img")
+            .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
+            .attr("style", "margin: 0px 5px 0px 3px;")
+            .attr("height", "16")
+            .attr("width", "16");
+        
+        backLinkList.append("span")
             .text(function(link) { return link.title || link.url; });
         
         // Add all of the forward links
@@ -40,26 +42,38 @@ $(document).ready((function () {
             .data(forwardLinks)
             .enter()
             .append("li")
+            .append("div")
         
-        forwardLinkList.append("img")
-            .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
-            .attr("style", "margin: 5px 5px 5px 8px; display: inline-block;")
-            .attr("height", "16")
-            .attr("width", "16");
-        
-        forwardLinkList.append("a")
-            .attr("href", function(link) { 
+        forwardLinkList.attr("href", function(link) { 
                 if (window.location.protocol == "https:")
                     return "https://" + link.url;
                 else
                     return "http://" + link.url;
-            })
+            });
+        
+        forwardLinkList.append("img")
+            .attr("src", function(link) { return link.favIconUrl || DEFAULT_FAVICON_URL; })
+            .attr("style", "margin: 0px 5px 0px 3px;")
+            .attr("height", "16")
+            .attr("width", "16");
+        
+        forwardLinkList.append("span")
             .text(function(link) { return link.title || link.url; });
         
         $("#frontier_history_button").click(function () {
             chrome.runtime.sendMessage({
                 type: "OPEN_HISTORY"
             });
+        });
+        
+        $("#frontier_forwardlinks").on('click', 'div', function() {
+            chrome.tabs.create({url: $(this).attr('href')});
+            return false;
+        });
+        
+        $("#frontier_backlinks").on('click', 'div', function() {
+            chrome.tabs.create({url: $(this).attr('href')});
+            return false;
         });
     }
     
