@@ -108,6 +108,29 @@ $(document).ready((function () {
             };
         }();
         document.querySelector("#activate_session_button").addEventListener('click', activateSession);
+
+        var openExtensions = function () {
+            return function () {
+                chrome.tabs.create({ 'url': 'chrome://extensions', 'active': true });
+            };
+        }();
+        document.querySelector("#extensions_item").addEventListener('click', openExtensions);
+
+        var openSettings = function () {
+            return function () {
+                chrome.tabs.create({ 'url': 'chrome://settings', 'active': true });
+            };
+        }();
+        document.querySelector("#settings_item").addEventListener('click', openSettings);
+
+        var openAbout = function () {
+            return function () {
+                chrome.tabs.create({ 'url': 'chrome://help', 'active': true });
+            };
+        }();
+        document.querySelector("#about_item").addEventListener('click', openExtensions);
+
+
         /*
         $("#history_item").click(function () {
             chrome.runtime.sendMessage({
