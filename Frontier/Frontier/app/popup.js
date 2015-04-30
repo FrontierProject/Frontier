@@ -75,6 +75,10 @@ $(document).ready((function () {
             chrome.tabs.create({url: $(this).attr('href')});
             return false;
         });
+        
+        $("#frontier_close_button").click(function() {
+            window.close();
+        });
     }
     
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
