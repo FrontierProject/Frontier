@@ -1,0 +1,23 @@
+﻿#controls{
+   padding-top:1.5rem;
+}
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+.input-field{
+    margin-top:0rem;
+}
+#session_controls{
+    padding-right:0px;
+    padding-left:0px;
+}
+#new_session_textbox{
+    padding-left:0px;
+}
+.input-field label{
+    left:0px;
+}
+#history_logo {
+  font-size: 1.24rem;
+}
