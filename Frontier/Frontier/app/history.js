@@ -86,20 +86,26 @@ $(document).ready((function () {
         });
 
         //get array of existing sessions for activate session dropdown
-        chrome.runtime.sendMessage({
-            type: "POPULATE_DROPDOWN"
-        }, function (dropdownList) {
-            dropdownList.list.forEach(function (value) {
+        var dropdownList = [];
+        function populateDropdown() {
+            if (!dropdownList[{"name" : "Default"}]) {
+                dropdownList.push({"name":"Default"});
+            }
+            dropdownList.forEach(function (value) {
                 $("#session_list").append($("<option></option>")
-                    .attr("value", value)
-                    .text(value));
+                    .attr("value", value.name)
+                    .text(value.name));
             });
-        });
+        };
+        //Call on page load
+        populateDropdown();
 
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             console.log(val);
-
+            if (!dropdownList[{"name":val}]) {
+                dropdownList.push({"name" : val});
+            }
             $("#session_list").append($("<option></option>")
                     .attr("value", val)
                     .text(val));
