@@ -85,30 +85,38 @@ $(document).ready((function () {
                 .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
         });
 
-        var newSession = function () {
-            var txt = document.querySelector("#new_session_textbox");
-            return function () {
-                var val = txt.value;
-                chrome.runtime.sendMessage({
-                    type: "ADD_SESSION",
-                    sessionName: val
-                });
-            };
-        }();
+        //get array of existing sessions for activate session dropdown
+        chrome.runtime.sendMessage({
+            type: "POPULATE_DROPDOWN"
+        }, function (dropdownList) {
+            dropdownList.list.forEach(function (value) {
+                $("#session_list").append($("<option></option>")
+                    .attr("value", value)
+                    .text(value));
+            });
+        });
+
+        function newSession() {
+            var val = document.forms["add_session_form"]["new_session"].value;
+            console.log(val);
+
+            $("#session_list").append($("<option></option>")
+                    .attr("value", val)
+                    .text(val));
+            chrome.runtime.sendMessage({
+                type: "ADD_SESSION",
+                sessionName: val
+            });
+        };
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
-        var activateSession = function () {
-            var option_selected = document.querySelector("#session_dropdown");
-            return function () {
-                var val = option_selected.lastChild;
+        function activateSession (){
                 chrome.runtime.sendMessage({
                     type: "SWITCH_SESSION",
                     sessionName: val
                 });
-            };
-        }();
-        document.querySelector("#activate_session_button").addEventListener('click', activateSession);
-
+        };
+    
         var openExtensions = function () {
             return function () {
                 chrome.tabs.create({ 'url': 'chrome://extensions', 'active': true });

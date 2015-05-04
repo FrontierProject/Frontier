@@ -42,30 +42,30 @@
             </div>
 
             <div class="section col s6 grid-example" id="session_controls">
-       
-                <div class="input-field left col s4 grid-example" id="new_session_textbox">
-                    <input id="new_session" type="text" class="validate" />
-                    <label for="new_session">New Session</label>
-                </div>
-                <a class="btn waves-effect waves-light col s2 grid-example" id="new_session_button">
-                    Add
-                    <i class="mdi-content-send right"></i>
-                </a>
-                
-                <div class="input-field col s4 grid-example">
-                    <select id="session_dropdown" class="dropdown-button waves-light btn">
-                        <option><a href="#">one</a></option>
-                        <option><a href="#">two</a></option>
-                        <option><a href="#">three</a></option>
-                    </select>
-                    <!--<label for="session_dropdown active">Active Session</label>-->
-                </div>
-                <a class="btn waves-effect waves-light col s2 grid-example" id="activate_session_button">
-                    Set
-                    <i class="mdi-content-send right"></i>
-                </a>
-                
-            </div>
+                <form onsubmit="return newSession();" method="post" name="add_session_form">
+                    <div class="input-field left col s4 grid-example" id="new_session_textbox">
+                        <input name="new_session" type="text" class="validate" />
+                        <label for="new_session">New Session</label>
+                    </div>
+                    <button type="button" class="btn waves-effect waves-light col s2 grid-example" id="new_session_button">
+                        Add
+                        <i class="mdi-content-send right"></i>
+                    </button>
+                </form>
+
+                <form onsubmit="return post();" method="post" name="activate_session_form">
+                    <div class="input-field col s4 grid-example">
+                        <select id="session_list" name="session_dropdown" class="dropdown-button waves-light btn">
+                            <option>Default</option>
+                        </select>
+                        <!--<label for="session_dropdown active">Active Session</label>-->
+                    </div>
+                    <button type="button" class="btn waves-effect waves-light col s2 grid-example" id="activate_session_button">
+                        Set
+                        <i class="mdi-content-send right"></i>
+                    </button>
+                </form>
+</div>
         </div>
         <div class="row">
             <div class="card-panel red col s4 grid-example" id="history_results">

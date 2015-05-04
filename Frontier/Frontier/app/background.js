@@ -239,6 +239,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
         if (request.sessionName) {
             currentSession = request.sessionName;
         }
+    } else if (request.type == "POPULATE_DROPDOWN") {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { list: sessions }, function () {
+                console.log(sessions.toString());
+            });
+        });
     }
     
 });
