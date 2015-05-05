@@ -1,3 +1,8 @@
+Array.prototype.has = function(value) {
+    var setObj = new Set(this);
+    return setObj.has(value);
+};
+
 $(document).ready((function () {
     chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         //var pre = document.getElementById("links");
@@ -123,7 +128,7 @@ $(document).ready((function () {
                 });
         };
         document.querySelector("#activate_session_button").addEventListener('click', activateSession);
-
+    
     
         var openExtensions = function () {
             return function () {
@@ -150,7 +155,7 @@ $(document).ready((function () {
             dropdownList.length=0;
         }
         document.querySelector("#clear_history_button").addEventListener('click', clearSessions);
-    
+
 
     });
 
