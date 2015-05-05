@@ -1,11 +1,5 @@
 ﻿//Array.prototype.toSet = function() {
-//    var setObj = new Set();
-//
-//    this.forEach(function(value) {
-//        setObj.add(value);
-//    });
-//
-//    return setObj;
+//    return new Set(this);
 //};
 
 Set.prototype.toArray = function() {
@@ -240,7 +234,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
             currentSession = request.sessionName;
         }
     } else if (request.type == "GET_SESSIONS") {
-        SendResponse(Object.keys(sessions));
+        SendResponse({
+            currentSession: currentSession,
+            sessions:       Object.keys(sessions)
+        });
     }
     else if(request.type == "GET_NODES"){
         
