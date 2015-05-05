@@ -107,7 +107,7 @@ $(document).ready((function () {
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             console.log(val);
-            if(dropdownList.indexOf(val) <= -1){
+            if(!dropdownList.has(val)){
                 dropdownList.push(val);
             }
             $("#session_list").append($("<option></option>")
