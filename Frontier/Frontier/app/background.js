@@ -239,6 +239,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
             sessions:       Object.keys(sessions)
         });
     }
+    else if (request.type == "CLEAR_HISTORY") {
+        sessions = {};
+        currentSession = DEFAULT_SESSION;
+        AddSession(DEFAULT_SESSION);
+    }
 });
 
 }());
