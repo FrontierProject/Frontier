@@ -134,8 +134,8 @@ $(document).ready((function () {
 
         function activateSession() {
             var sessionList = $("#session_list")[0];
-            chrome.runtime.sendMessage({
-                type: "SWITCH_SESSION",
+                chrome.runtime.sendMessage({
+                    type: "SWITCH_SESSION",
                 sessionName: sessionList[sessionList.selectedIndex].value
             });
             var oldGraph = document.querySelector("svg");
