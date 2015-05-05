@@ -37,8 +37,8 @@
     <div class="container">
         <div class="row" id="controls">
             <div class="section col s6 grid-example" id="results_controls">
-                <button class="btn waves-effect waves-light" id="clear_history_button">Clear browsing data...</button>
-                <button class="btn waves-effect waves-light">Remove selected items</button>
+                <button class="btn red darken-2 waves-effect waves-light" id="clear_history_button">Clear browsing data...</button>
+                <button class="btn red darken-2 waves-effect waves-light">Remove selected items</button>
             </div>
 
             <div class="section col s6 grid-example" id="session_controls">
@@ -47,7 +47,7 @@
                         <input name="new_session" type="text" class="validate" />
                         <label for="new_session">New Session</label>
                     </div>
-                    <button type="button" class="btn waves-effect waves-light col s2 grid-example" id="new_session_button">
+                    <button type="button" class="btn red darken-2 waves-effect waves-light col s2 grid-example" id="new_session_button">
                         Add
                         <i class="mdi-content-send right"></i>
                     </button>
@@ -55,11 +55,10 @@
 
                 <form onsubmit="return post();" method="post" name="activate_session_form">
                     <div class="input-field col s4 grid-example">
-                        <select id="session_list" name="session_dropdown" class="dropdown-button waves-light btn">
-                        </select>
+                        <select id="session_list" name="session_dropdown" class="dropdown-button waves-light red darken-2 btn"></select>
                         <!--<label for="session_dropdown active">Active Session</label>-->
                     </div>
-                    <button type="button" class="btn waves-effect waves-light col s2 grid-example" id="activate_session_button">
+                    <button type="button" class="btn red darken-2 waves-effect waves-light col s2 grid-example" id="activate_session_button">
                         Set
                         <i class="mdi-content-send right"></i>
                     </button>
