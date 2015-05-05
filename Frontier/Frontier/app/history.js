@@ -6,6 +6,8 @@ Array.prototype.has = function(value) {
 $(document).ready((function () {
     chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
 
+        const DEFAULT_FAVICON_URL = "http://www.google.com/images/icons/product/chrome-32.png";
+
         function renderGraph(response) {
             var width = 600,
                 height = 600;
@@ -50,7 +52,6 @@ $(document).ready((function () {
             //node.append("circle")
             //    .attr("r", 8);
 
-            const DEFAULT_FAVICON_URL = "http://www.google.com/images/icons/product/chrome-32.png";
 
             node.append("image")
                 .attr("xlink:href", function (d) { return d.favIconUrl || DEFAULT_FAVICON_URL; })
@@ -91,11 +92,37 @@ $(document).ready((function () {
 
         // initial graph rendering
         renderGraph(response);
+ 
+        // populate history results
+        var historyItems = response.nodes;
+        var historyResults = $("#history_results")
+            .append($("<div></div>"))
+            .attr("class", "collection col s4 grid-example")
+            .attr("id", "history-items");
+
+        historyItems.forEach(function(value) {
+            var item = $("<div></div>")
+                .attr("class", "collection-item");
+
+            item
+                .append($("<img>")
+                    .attr("src", value.favIconUrl || DEFAULT_FAVICON_URL)
+                    .attr("height", "16")
+                    .attr("width", "16"));
+
+            item
+                .append($("<span></span>").append($("<a></a>")
+                    .attr("href", value.rawUrl)
+                    .text(value.title || value.rawUrl)));
+
+            historyResults
+                .append(item);
+        });
 
         //get array of existing sessions for activate session dropdown
         var currentSession = null;
         var dropdownList = null;
-       
+
         chrome.runtime.sendMessage({ type: "GET_SESSIONS" }, function (response) {
             currentSession = response.currentSession;
             dropdownList = response.sessions;
@@ -144,8 +171,8 @@ $(document).ready((function () {
             //var graphContainer = oldGraph.parentNode;
             //graphContainer.removeChild(oldGraph);
             //var newGraph = document.createElement("svg");
-            //newGraph.className = "graph";
             //graphContainer.appendChild(newGraph);
+            //newGraph.className = "graph";
             //chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
             //    renderGraph(response);
             //});
@@ -154,29 +181,24 @@ $(document).ready((function () {
     
     
         var openExtensions = function () {
-            return function () {
-                chrome.tabs.create({ 'url': 'chrome://extensions', 'active': true });
-            };
-        }();
+            chrome.tabs.create({ 'url': 'chrome://extensions', 'active': true });
+        };
         document.querySelector("#extensions_item").addEventListener('click', openExtensions);
 
         var openSettings = function () {
-            return function () {
-                chrome.tabs.create({ 'url': 'chrome://settings', 'active': true });
-            };
-        }();
+            chrome.tabs.create({ 'url': 'chrome://settings', 'active': true });
+        };
         document.querySelector("#settings_item").addEventListener('click', openSettings);
 
         var openAbout = function () {
-            return function () {
-                chrome.tabs.create({ 'url': 'chrome://help', 'active': true });
-            };
-        }();
+            chrome.tabs.create({ 'url': 'chrome://help', 'active': true });
+        };
         document.querySelector("#about_item").addEventListener('click', openExtensions);
 
         var clearSessions = function () {
-            dropdownList.length=0;
-        }
+            chrome.runtime.sendMessage({ type: "CLEAR_HISTORY" });
+            chrome.tabs.create({ 'url': 'chrome://settings/clearBrowserData', 'active': true });
+        };
         document.querySelector("#clear_history_button").addEventListener('click', clearSessions);
 
 
