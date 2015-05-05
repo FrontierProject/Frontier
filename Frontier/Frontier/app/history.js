@@ -102,7 +102,7 @@ $(document).ready((function () {
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             console.log(val);
-            if(dropdownList.indexOf(val) != -1){
+            if(dropdownList.indexOf(val) <= -1){
                 dropdownList.push(val);
             }
             $("#session_list").append($("<option></option>")
@@ -115,12 +115,15 @@ $(document).ready((function () {
         };
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
-        function activateSession (){
+        function activateSession() {
+            var val = document.forms["activate_session_form"]["session_dropdown"].value;
                 chrome.runtime.sendMessage({
                     type: "SWITCH_SESSION",
-                    sessionName: val
+                    sessionName: value
                 });
         };
+        document.querySelector("#activate_session_button").addEventListener('click', activateSession);
+
     
         var openExtensions = function () {
             return function () {
@@ -147,28 +150,6 @@ $(document).ready((function () {
             dropdownList.length=0;
         }
         document.querySelector("#clear_history_button").addEventListener('click', clearSessions);
-
-        /*
-        $("#history_item").click(function () {
-            chrome.runtime.sendMessage({
-                type: "OPEN_HISTORY"
-            });
-        });
-        $("#extension_item").click(function () {
-            chrome.runtime.sendMessage({
-                type: "OPEN_EXTENSIONS"
-            });
-        });
-        $("#settings_item").click(function () {
-            chrome.runtime.sendMessage({
-                type: "OPEN_SETTINGS"
-            });
-        });
-        $("#about_item").click(function () {
-            chrome.runtime.sendMessage({
-                type: "OPEN_ABOUT"
-            });
-        });*/
     
 
     });
