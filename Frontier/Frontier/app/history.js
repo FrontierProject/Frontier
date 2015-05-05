@@ -109,14 +109,15 @@ $(document).ready((function () {
             console.log(val);
             if(!dropdownList.has(val)){
                 dropdownList.push(val);
-            }
-            $("#session_list").append($("<option></option>")
+                $("#session_list").append($("<option></option>")
                 .attr("value", val)
                 .text(val.toString()));
-            chrome.runtime.sendMessage({
-                type: "ADD_SESSION",
-                sessionName: val
-            });
+                chrome.runtime.sendMessage({
+                    type: "ADD_SESSION",
+                    sessionName: val
+                });
+            }
+            
         };
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
