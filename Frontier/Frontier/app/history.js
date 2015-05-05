@@ -91,16 +91,22 @@ $(document).ready((function () {
         });
 
         //get array of existing sessions for activate session dropdown
+        var currentSession = null;
         var dropdownList = null;
        
         chrome.runtime.sendMessage({ type: "GET_SESSIONS" }, function (response) {
-            dropdownList = response;
+            currentSession = response.currentSession;
+            dropdownList = response.sessions;
 
             //populate dropdown
-            dropdownList.forEach(function (value) {
-                $("#session_list").append($("<option></option>")
+            var sessionList = $("#session_list");
+            dropdownList.forEach(function (value, index) {
+                sessionList.append($("<option></option>")
                     .attr("value", value)
                     .text(value));
+                if (value == currentSession) {
+                    sessionList.selectedIndex = index;
+                }
             });
         });
 
