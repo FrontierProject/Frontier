@@ -1,3 +1,8 @@
+Array.prototype.has = function(value) {
+    var setObj = new Set(this);
+    return setObj.has(value);
+};
+
 $(document).ready((function () {
     chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
         //var pre = document.getElementById("links");
@@ -102,7 +107,7 @@ $(document).ready((function () {
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             console.log(val);
-            if(dropdownList.indexOf(val) != -1){
+            if(dropdownList.has(val) != -1){
                 dropdownList.push(val);
             }
             $("#session_list").append($("<option></option>")
