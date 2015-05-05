@@ -105,33 +105,37 @@ $(document).ready((function () {
                     .attr("value", value)
                     .text(value));
                 if (value == currentSession) {
-                    sessionList.selectedIndex = index;
+                    sessionList[0].selectedIndex = index;
                 }
             });
         });
 
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
+            var sessionList = $("#session_list");
             console.log(val);
             if(!dropdownList.has(val)){
                 dropdownList.push(val);
-                $("#session_list").append($("<option></option>")
+                sessionList.append($("<option></option>")
                 .attr("value", val)
                 .text(val.toString()));
                 chrome.runtime.sendMessage({
                     type: "ADD_SESSION",
                     sessionName: val
                 });
+                if (value == currentSession) {
+                    sessionList[0].selectedIndex = index;
+                }
             }
             
         };
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
         function activateSession() {
-            var val = document.forms["activate_session_form"]["session_dropdown"];
+            var sessionList = $("#session_list")[0];
                 chrome.runtime.sendMessage({
                     type: "SWITCH_SESSION",
-                    sessionName: value
+                sessionName: sessionList[sessionList.selectedIndex].value
                 });
         };
         document.querySelector("#activate_session_button").addEventListener('click', activateSession);
