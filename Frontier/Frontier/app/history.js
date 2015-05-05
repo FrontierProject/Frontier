@@ -94,7 +94,7 @@ $(document).ready((function () {
         //get array of existing sessions for activate session dropdown
         var currentSession = null;
         var dropdownList = null;
-       
+        
         chrome.runtime.sendMessage({ type: "GET_SESSIONS" }, function (response) {
             currentSession = response.currentSession;
             dropdownList = response.sessions;
