@@ -86,29 +86,28 @@ $(document).ready((function () {
         });
 
         //get array of existing sessions for activate session dropdown
-        var dropdownList = [];
-        function populateDropdown() {
-            if (!dropdownList[{"name" : "Default"}]) {
-                dropdownList.push({"name":"Default"});
-            }
+        var dropdownList = null;
+       
+        chrome.runtime.sendMessage({ type: "GET_SESSIONS" }, function (response) {
+            dropdownList = response;
+
+            //populate dropdown
             dropdownList.forEach(function (value) {
                 $("#session_list").append($("<option></option>")
-                    .attr("value", value.name)
-                    .text(value.name));
+                    .attr("value", value)
+                    .text(value));
             });
-        };
-        //Call on page load
-        populateDropdown();
+        });
 
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             console.log(val);
-            if (!dropdownList[{"name":val}]) {
-                dropdownList.push({"name" : val});
+            if(dropdownList.indexOf(val) != -1){
+                dropdownList.push(val);
             }
             $("#session_list").append($("<option></option>")
-                    .attr("value", val)
-                    .text(val));
+                .attr("value", val)
+                .text(val.toString()));
             chrome.runtime.sendMessage({
                 type: "ADD_SESSION",
                 sessionName: val
@@ -144,6 +143,10 @@ $(document).ready((function () {
         }();
         document.querySelector("#about_item").addEventListener('click', openExtensions);
 
+        var clearSessions = function () {
+            dropdownList.length=0;
+        }
+        document.querySelector("#clear_history_button").addEventListener('click', clearSessions);
 
         /*
         $("#history_item").click(function () {

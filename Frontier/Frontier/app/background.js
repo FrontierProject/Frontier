@@ -41,7 +41,7 @@ function AddSession(sessionName) {
     }
 }
 
-const DEFAULT_SESSION = "$$default$$";
+const DEFAULT_SESSION = "Default";
 var currentSession = DEFAULT_SESSION;
 AddSession(DEFAULT_SESSION);
 
@@ -239,8 +239,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
         if (request.sessionName) {
             currentSession = request.sessionName;
         }
-    } else if (request.type == "POPULATE_DROPDOWN") {
-       
+    } else if (request.type == "GET_SESSIONS") {
+        SendResponse(Object.keys(sessions));
     }
     
 });
