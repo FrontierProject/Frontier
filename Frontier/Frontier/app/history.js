@@ -128,7 +128,7 @@ $(document).ready((function () {
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
         function activateSession() {
-            var val = document.forms["activate_session_form"]["session_dropdown"].value;
+            var val = document.forms["activate_session_form"]["session_dropdown"];
                 chrome.runtime.sendMessage({
                     type: "SWITCH_SESSION",
                     sessionName: value
