@@ -89,6 +89,7 @@ $(document).ready((function () {
             });
         }
 
+        // initial graph rendering
         renderGraph(response);
 
         //get array of existing sessions for activate session dropdown
@@ -138,15 +139,16 @@ $(document).ready((function () {
                     type: "SWITCH_SESSION",
                 sessionName: sessionList[sessionList.selectedIndex].value
             });
-            var oldGraph = document.querySelector("svg");
-            var graphContainer = oldGraph.parentNode;
-            graphContainer.removeChild(oldGraph);
-            var newGraph = document.createElement("svg");
-            newGraph.className = "graph";
-            graphContainer.appendChild(newGraph);
-            chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
-                renderGraph(response);
-            });
+            // re-render graph
+            //var oldGraph = document.querySelector("svg");
+            //var graphContainer = oldGraph.parentNode;
+            //graphContainer.removeChild(oldGraph);
+            //var newGraph = document.createElement("svg");
+            //newGraph.className = "graph";
+            //graphContainer.appendChild(newGraph);
+            //chrome.runtime.sendMessage({ type: "HISTORY_PAGE" }, function (response) {
+            //    renderGraph(response);
+            //});
         };
         document.querySelector("#activate_session_button").addEventListener('click', activateSession);
     
