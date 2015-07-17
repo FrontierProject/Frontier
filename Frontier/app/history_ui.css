@@ -1,0 +1,88 @@
+﻿
+#nav_panel{
+    padding-left:0px;
+    padding-right:0px;
+}
+#chrome_page_nav{
+    padding:0px;
+    z-index:inherit;
+    width: 8.33333%;
+}
+
+#top_row{
+    height: 64px;
+    margin-bottom: 0px;
+}
+
+#default_controls{
+    height: 64px;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+#history_container{
+    padding-left: 0px;
+}
+#session_controls{
+    height: 64px;
+    padding: 0 0.75rem;
+    margin-bottom: 0px;
+}
+#session_controls form{
+    padding-left: 0;
+    height: inherit;
+}
+
+#session_list{
+    width: auto;
+    margin-right: 0px;
+}
+
+#form_divider{
+    height: 40px;
+}
+
+#history_logo {
+  font-size: 1.6em;
+}
+#chrome_heading{
+    font-size: 1.6em;
+}
+
+#session_controls{
+    padding-right:0px;
+    padding-left:0px;
+}
+
+.favicon, .cbox{
+    height: 16px;
+    width: 16px;
+    margin-right: 0.75rem;
+}
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
+    position: inherit;
+    left: auto;
+}
+
+.vertical_divider{
+    width: 1px;
+    background-color: #e0e0e0;
+    margin-right: 1.5rem;
+    overflow: hidden;
+}
+
+.btn{
+    margin-right: 0.75rem;
+}
+.input-field{
+    margin-right: 0.75rem;
+    margin-top:0rem;
+}
+
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.input-field label{
+    left:0px;
+}

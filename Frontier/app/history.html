@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html id="history_page">
+<head>
+    <meta charset="utf-8" />
+    <title>History</title>
+    <script src="jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="materialize.min.css" />
+	<script src="materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="history_ui.css" />
+    <script src="d3.min.js"></script>
+</head>
+<body id="">
+    <!--<div id="chrome_heading_container">
+        <h1 id="chrome_heading">Chrome</h1>
+    </div>
+     -->
+	<!--<div id = "search_controls">
+		<input type="text" id="search_history"></input>
+		<button class="control_button" id="search_button">Search</button>
+	</div>-->
+    <div id="container" class="row">
+        <div id="nav_panel" class="col s1">
+            <div class="row">
+                <ul class="side-nav fixed" id="chrome_page_nav">
+                    <li><a id="chrome_heading" href="" class="grey-text text-darken-2">Chrome</a></li>
+                    <li class="active" id="history_item"><a href="">History</a></li>
+                    <li class="" id="extensions_item"><a href="">Extensions</a></li>
+                    <li class="" id="settings_item"><a href="">Settings</a></li>
+                    <li class="" id="about_item"><a href="">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col s11">
+            <div id="top_row" class="row valign-wrapper">
+                 <a id="history_logo" href="" class="grey-text left">History</a>
+            </div>
+            <div class="divider"></div>
+            <div id="history_content" class="row">
+                <div class="section col s4" id="history_container">
+                   <form class="" onsubmit="return removeSelected();" method="post" name="remove_selected_form">
+                        <div class="row valign-wrapper" id="default_controls">
+                            <button class="btn red darken-2 waves-effect waves-light">Clear browsing data...</button>
+                            <button class="btn red darken-2 waves-effect waves-light">Remove selected items</button>
+                        </div>
+                        <div class="row" id="page_list">
+
+                        </div>
+                   </form>
+                </div>
+                <div class="section col s8" id="module_container">
+                    <div class="row valign-wrapper" id="session_controls">
+                        <form class="col s3 valign-wrapper" onsubmit="return newSession();" method="post" name="add_session_form">
+                            <div class="input-field left" id="new_session_textbox">
+                                <input name="new_session" type="text" class="validate" />
+                                <label for="new_session">New Session</label>
+                            </div>
+                            <button type="button" class="btn red darken-2 waves-effect waves-light" id="new_session_button">
+                                Add
+                                <i class="mdi-content-send right"></i>
+                            </button>
+                        </form>
+                        <div id="form_divider" class="vertical_divider"></div>
+                        <form class="col s9 valign-wrapper" onsubmit="return post();" method="post" name="activate_session_form">
+                            <div class="input-field">
+                                <select id="session_list" name="session_dropdown" class="dropdown-button waves-light red darken-2 btn"></select>
+                                <!--<label for="session_dropdown active">Active Session</label>-->
+                            </div>
+                            <button type="button" class="btn red darken-2 waves-effect waves-light" id="activate_session_button">
+                                Set
+                                <i class="mdi-content-send right"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <div class="card-panel grey lighten-2 col s6" id="graph">
+                            <svg class="graph"></svg>
+                            <script src="history.js"></script>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
