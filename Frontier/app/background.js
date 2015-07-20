@@ -15,6 +15,7 @@ Set.prototype.toArray = function() {
 (function() {
 
 var sessions = {};
+var pageCount = 0;
 
 function AddSession(sessionName) {
     if (!(sessions[sessionName])) {
@@ -86,9 +87,9 @@ function ForkedLinks(target) {
 };
 
 var blackListedUrls = new Set([
-    "www.google.com/webhp",
     "www.google.com/_/chrome/newtab",
-    "newtab/"
+    "newtab/",
+    "chrome://history/"
 ]);
 
 // add link object graph adjacency lists
@@ -101,13 +102,16 @@ function AddLink(link, sender) {
 
     var nodes = sessions[currentSession].nodes;
 
+    
     // insert target node
     if (!(nodes[targetUrlStr])) {
         nodes[targetUrlStr] = {
             url:    targetUrlStr,
             rawUrl: link.target,
-            title:  link.title,
+            title: link.title,
+            pageIndex: pageCount
         };
+        pageCount += 1;
     } else {
         nodes[targetUrlStr].title = link.title;
     }
@@ -133,9 +137,12 @@ function AddLink(link, sender) {
             // insert source vertex
             if (!(nodes[sourceUrlStr])) {
                 nodes[sourceUrlStr] = {
-                    url:    sourceUrlStr,
-                    rawUrl: link.source
+                   url:    sourceUrlStr,
+                   rawUrl: link.source,
+                   title: link.source.title,
+                   pageIndex: pageCount
                 };
+                pageCount += 1;
             }
 
             if (!(forwardLinks[sourceUrlStr])) {
@@ -152,16 +159,65 @@ function AddLink(link, sender) {
     }
 }
 
+function RemoveLink(pageIndex, sender) {
+    var nodes = sessions[currentSession].nodes;
+    var targetURL = "";
+    console.log(pageIndex);
+
+    for (var page in nodes) {
+
+        if (nodes[page].hasOwnProperty('url') && nodes[page].pageIndex.toString() == pageIndex) {
+            targetURL = nodes[page].url;
+            delete nodes[page];
+        }
+    }
+    
+    //Edges will be deleted on refresh
+    if (typeof targetURL != undefined && targetURL != "") {
+        var forwardLinks = sessions[currentSession].forwardLinks;
+        var backLinks = sessions[currentSession].backLinks; 
+
+        for (var page in forwardLinks) {
+            if (forwardLinks[page].has(targetURL)) {
+                forwardLinks[page].delete(targetURL);
+            }
+        }
+        if (forwardLinks.hasOwnProperty(targetURL)) {
+            delete forwardLinks[targetURL];
+        }
+
+        for (var page in backLinks) {
+            if (backLinks[page].has(targetURL)) {
+                backLinks[page].delete(targetURL);
+            }
+        }
+        if (backLinks.hasOwnProperty(targetURL)) {
+            delete backLinks[targetURL];
+        }
+
+        chrome.history.deleteUrl({ url: targetURL }, function () {
+            if (chrome.runtime.lastError) {
+                console.log(targetURL);
+                console.log(chrome.runtime.lastError.message);
+            } else {
+                //URL exists and is deleted
+            }
+        });
+    }
+}
+
 // convert the node set into a list and collapse adjacency list into a list of node indices
 function FlattenNodesLinks(nodesObj, linksObj) {
     var nodesArr = [];
     var indices  = {};
-    var index    = 0;
 
     // convert node object into list and record its index
     Object.keys(nodesObj).forEach(function(node) {
-        nodesArr.push(nodesObj[node]);
-        indices[node] = index++;
+        if (nodesObj[node] !== null && nodesObj[node] !== undefined) {
+            nodesArr.push(nodesObj[node]);
+            console.log(nodesObj[node]);
+            indices[node] = nodesObj[node].pageIndex;
+        }
     });
 
     var linksArr = [];
@@ -169,14 +225,16 @@ function FlattenNodesLinks(nodesObj, linksObj) {
     // iterate through each source entry
     Object.keys(linksObj).forEach(function(sourceUrlStr) {
         // iterate through each target associated with the current source url
-        linksObj[sourceUrlStr].forEach(function(targetUrlStr) {
-            // NOTE: these objects are serialized into JSON so object references are lost
-            // d3 needs node indices for force directed layout
-            linksArr.push({
-                source: indices[sourceUrlStr],
-                target: indices[targetUrlStr]
+        if (linksObj[sourceUrlStr] !== null && linksObj[sourceUrlStr] !== undefined) {
+            linksObj[sourceUrlStr].forEach(function (targetUrlStr) {
+                // NOTE: these objects are serialized into JSON so object references are lost
+                // d3 needs node indices for force directed layout
+                linksArr.push({
+                    source: indices[sourceUrlStr],
+                    target: indices[targetUrlStr]
+                });
             });
-        });
+        }
     });
 
     return {
@@ -201,10 +259,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             console.log("*** Inserting <" + targetUrlStr + "> in tab listener");
             nodes[targetUrlStr] = {
                 url:    targetUrlStr,
-                rawUrl: tab.url
+                rawUrl: tab.url,
+                title: tab.title,
+                pageIndex: pageCount
             };
+            pageCount++;
         }
-
+        
         // add favicon url to the node
         // now favicon available whenever the graph is rendered by the front-end
         nodes[targetUrlStr].favIconUrl = favIconUrl;
@@ -213,9 +274,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
     if (request.type == "ADD_LINK") {
-        //SendResponse(AddLink(request, sender));
         AddLink(request, sender);
-    } else if (request.type == "HISTORY_PAGE") {
+    }
+    else if (request.type == "REMOVE_LINK") {
+        RemoveLink(request.pageIndex, sender);
+    }
+    else if (request.type == "HISTORY_PAGE") {
         SendResponse(FlattenNodesLinks(sessions[currentSession].nodes, sessions[currentSession].forwardLinks));
     } else if (request.type == "FORKED_LINKS") {
         SendResponse(ForkedLinks(request.url));

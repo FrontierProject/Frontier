@@ -117,11 +117,14 @@ $(document).ready((function () {
         else {
             
             //array is historyItems
-            historyItems.forEach(function (value, index, array) {
+            historyItems.forEach(function (value) {
                 var item = $("<div></div>")
                     .attr("class", "collection-item row valign-wrapper");
                 
-                var checkBoxId = "pg" + index.toString();
+                console.log(value);
+
+                var checkBoxId = value.pageIndex.toString();
+                
                 item
                     .append($("<input></input>")
                     .attr("class", "cbox")
@@ -162,18 +165,6 @@ $(document).ready((function () {
             });
         });
 
-        function removeSelected() {
-            var pageCollection = $("#history_collection").childNodes;
-
-            pageCollection.forEach(function (value, index, array) {
-                var checkedBox = $('.cbox[type="checkbox"]:checked', value)
-                if (typeof checkedBox.val() != undefined) {
-                    var pageToDelete = $()
-                }
-            });
-
-        };
-
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
             var sessionList = $("#session_list");
@@ -197,8 +188,8 @@ $(document).ready((function () {
 
         function activateSession() {
             var sessionList = $("#session_list")[0];
-                chrome.runtime.sendMessage({
-                    type: "SWITCH_SESSION",
+            chrome.runtime.sendMessage({
+                type: "SWITCH_SESSION",
                 sessionName: sessionList[sessionList.selectedIndex].value
             });
             // re-render graph
@@ -235,6 +226,25 @@ $(document).ready((function () {
             chrome.tabs.create({ 'url': 'chrome://settings/clearBrowserData', 'active': true });
         };
         document.querySelector("#clear_history_button").addEventListener('click', clearSessions);
+
+
+        var removePages = function () {
+            var pageCollection = Array.prototype.slice.call(document.getElementById("history_collection").childNodes);
+
+            pageCollection.forEach(function (value) {
+                
+                //checkbox is first element of collection item
+                var checkedBox = value.childNodes[0];
+
+                if (checkedBox.checked) {
+                    chrome.runtime.sendMessage({
+                        type: "REMOVE_LINK",
+                        pageIndex: parseInt(checkedBox.id)
+                    });
+                }
+            });
+        };
+        document.querySelector("#remove_selected_button").addEventListener('click', removePages);
 
 
     });

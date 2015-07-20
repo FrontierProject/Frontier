@@ -44,7 +44,6 @@
     <Content Include="app\font\material-design-icons\LICENSE.txt" />
     <Content Include="app\font\material-design-icons\Material-Design-Icons.svg" />
     <Content Include="app\Graph.js" />
-    <Content Include="app\GraphBuilder.js" />
     <Content Include="app\history.html" />
     <Content Include="app\history.js" />
     <Content Include="app\history_ui.css" />
