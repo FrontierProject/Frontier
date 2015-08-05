@@ -1,0 +1,133 @@
+﻿
+#nav_panel{
+    padding-left:0px;
+    padding-right:0px;
+}
+#chrome_page_nav{
+    padding:0px;
+    z-index:inherit;
+    width: 8.33333%;
+}
+
+#top_row{
+    height: 64px;
+    margin-bottom: 0px;
+}
+
+#default_controls{
+    height: 64px;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+#history_container{
+    padding-left: 0px;
+}
+#session_controls{
+    height: 64px;
+    padding: 0 0.75rem;
+    margin-bottom: 0px;
+}
+#session_controls form{
+    padding-left: 0;
+    height: inherit;
+}
+
+#form_divider{
+    height: 40px;
+}
+
+#history_logo {
+  font-size: 1.6em;
+}
+#chrome_heading{
+    font-size: 1.6em;
+}
+
+#session_controls{
+    padding-right:0px;
+    padding-left:0px;
+}
+#chrome_favicon{
+    margin-right: 0px;
+}
+#linkContainer{
+    width: auto;
+}
+
+div[id*="basicInfo"], #no_elements > span{
+    margin: 0.75rem;
+}
+
+div[id*="expandedDropdown"], div[id*="pageStats"] > .card-content > .collection{
+    margin: 0;
+}
+#history_collection > .collection-item, div[id*="expandedDropdown"] .card, 
+div[id*="collectionItem"] > .col , div[id*="expandedDropdown"], 
+div[id*="pageStats"] > .card-content{
+    padding: 0;
+    margin: 0;
+}
+div[id*="expandedDropdown"] h6{
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.timeList{
+    max-height:inherit;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.mobileViewTitle{
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.card > .card-image > img{
+    height: 193px;
+}
+.card .card-content, .card .card-action{
+    padding: 0.75rem;
+}
+.smallDropdown{
+    width: 20px;
+    height: 20px;
+    right: 0.75rem;
+    position: absolute;
+    padding: 0;
+}
+
+.favicon, .cbox{
+    height: 16px;
+    width: 16px;
+    margin-right: 0.75rem;
+}
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
+    position: inherit;
+    left: auto;
+}
+
+.vertical_divider{
+    width: 1px;
+    background-color: #e0e0e0;
+    margin-right: 1.5rem;
+    overflow: hidden;
+}
+
+.margin-right-p75{
+    margin-right: 0.75rem;
+}
+.input-field{
+    margin-right: 0.75rem;
+    margin-top:0rem;
+}
+
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.input-field label{
+    left:0px;
+}

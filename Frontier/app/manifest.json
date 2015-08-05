@@ -1,0 +1,62 @@
+{
+  "name": "Frontier",
+  "version":"1.0",
+  "manifest_version": 2,
+  "description": "Frontier Web Navigation Solution",
+
+  "icons":{
+	"16": "img/frontier_icon_16.png",
+	"48": "img/frontier_icon_48.png",
+	"128": "img/frontier_icon_128.png"
+  },
+
+  "background":{
+	"scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+  
+	{
+		"matches": ["<all_urls>"],
+		"js": ["jquery-2.1.3.min.js","page_ui.js","content_script.js","d3.min.js"],
+		"css": ["cssreset-context-min.css"],
+		"run_at": "document_idle"
+	}
+  ],
+
+  "permissions": [
+    "background",
+	"history",
+	"tabs",
+	"storage",
+	"webNavigation",
+	"<all_urls>"
+  ],
+  
+  "web_accessible_resources": [
+	"page_ui.css",
+    "cssreset-context-min.css",
+	"jquery-2.1.3.min.js",
+	"d3.min.js",
+	"page_ui.html",
+	"script_imports.html",
+    "img/frontier_icon_16.png",
+    "img/back_icon_16.png",
+    "img/forward_icon_16.png",
+    "img/close_icon_16.png",
+    "img/history_icon_16.png"
+  ],
+
+  "options_page": "options.html",
+
+  "browser_action": {
+	"default_title": "Frontier",
+    "default_icon": "img/frontier_icon_16.png",
+    "default_popup": "popup.html"
+  },
+
+  "chrome_url_overrides": {
+    "history": "history.html"
+  }
+  
+}
