@@ -22,11 +22,16 @@
         <div id="nav_panel" class="col s1">
             <div class="row">
                 <ul class="side-nav fixed" id="chrome_page_nav">
-                    <li><a id="chrome_heading" href="" class="grey-text text-darken-2">Chrome</a></li>
-                    <li class="active" id="history_item"><a href="">History</a></li>
-                    <li class="" id="extensions_item"><a href="">Extensions</a></li>
-                    <li class="" id="settings_item"><a href="">Settings</a></li>
-                    <li class="" id="about_item"><a href="">About</a></li>
+                    <li>
+                        <a id="chrome_heading" href="" class="grey-text text-darken-2">
+                            <img id="chrome_favicon" class="favicon" src="http://www.google.com/images/icons/product/chrome-32.png" />
+                            Chrome
+                        </a>
+                    </li>
+                    <li class="active" id="history_link"><a href="">History</a></li>
+                    <li class="" id="extensions_link"><a href="">Extensions</a></li>
+                    <li class="" id="settings_link"><a href="">Settings</a></li>
+                    <li class="" id="about_link"><a href="">About</a></li>
                 </ul>
             </div>
         </div>
@@ -39,8 +44,8 @@
                 <div class="section col s4" id="history_container">
                    <form class="" onsubmit="return removeSelected();" method="post" name="remove_selected_form">
                         <div class="row valign-wrapper" id="default_controls">
-                            <button id="clear_history_button" class="btn red darken-2 waves-effect waves-light">Clear browsing data...</button>
-                            <button id="remove_selected_button" class="btn red darken-2 waves-effect waves-light">Remove selected items</button>
+                            <button id="clear_history_button" class="btn margin-right-p75 red darken-2 waves-effect waves-light">Clear browsing data...</button>
+                            <button id="remove_selected_button" class="btn margin-right-p75 red darken-2 waves-effect waves-light">Remove selected items</button>
                         </div>
                         <div class="row" id="page_list">
 
@@ -54,7 +59,7 @@
                                 <input name="new_session" type="text" class="validate" />
                                 <label for="new_session">New Session</label>
                             </div>
-                            <button type="button" class="btn red darken-2 waves-effect waves-light" id="new_session_button">
+                            <button type="button" class="btn margin-right-p75 red darken-2 waves-effect waves-light" id="new_session_button">
                                 Add
                                 <i class="mdi-content-send right"></i>
                             </button>
@@ -62,10 +67,10 @@
                         <div id="form_divider" class="vertical_divider"></div>
                         <form class="col s9 valign-wrapper" onsubmit="return post();" method="post" name="activate_session_form">
                             <div class="input-field">
-                                <select id="session_list" name="session_dropdown" class="dropdown-button waves-light red darken-2 btn"></select>
+                                <select id="session_dropdown" class="btn waves-light red darken-2"></select>
                                 <!--<label for="session_dropdown active">Active Session</label>-->
                             </div>
-                            <button type="button" class="btn red darken-2 waves-effect waves-light" id="activate_session_button">
+                            <button type="button" class="btn margin-right-p75 red darken-2 waves-effect waves-light" id="activate_session_button">
                                 Set
                                 <i class="mdi-content-send right"></i>
                             </button>

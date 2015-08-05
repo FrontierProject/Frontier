@@ -140,8 +140,7 @@ $(document).ready((function () {
                     .attr("id", "itemContainer" + checkBoxId);
 
                 var row = $("<div></div>")
-                    .attr("class", "row valign-wrapper")
-                    .attr("id", "basicInfo" + checkBoxId);
+                    .attr("class", "row valign-wrapper");
 
                 row
                     .append($("<input></input>")
@@ -166,7 +165,7 @@ $(document).ready((function () {
                     .append(pageLink);
 
                 var dropdownButton = $("<button></button>")
-                        .attr("class", "red smallDropdown btn")
+                        .attr("class", "dropdown-button btn red smallDropdown")
                         .attr("type", "button")
                         .attr("id", "dd" + checkBoxId);
                        
@@ -195,34 +194,32 @@ $(document).ready((function () {
             dropdownList = response.sessions;
 
             //populate dropdown
-            var sessionDropdown = $("#session_dropdown");
+            var sessionList = $("#session_list");
             dropdownList.forEach(function (value, index) {
-                sessionDropdown.append($("<option></option>")
+                sessionList.append($("<option></option>")
                     .attr("value", value)
-                    .attr("class", "dropdownOption")
-                    .append(value));
+                    .text(value));
                 if (value == currentSession) {
-                    sessionDropdown[0].selectedIndex = index;
+                    sessionList[0].selectedIndex = index;
                 }
             });
         });
 
         function newSession() {
             var val = document.forms["add_session_form"]["new_session"].value;
-            var sessionDropdown = $("#session_dropdown");
+            var sessionList = $("#session_list");
             console.log(val);
             if(!dropdownList.has(val)){
                 dropdownList.push(val);
-                sessionDropdown.append($("<option></option>")
+                sessionList.append($("<option></option>")
                 .attr("value", val)
-                .attr("class", "dropdownOption")
-                .append(val));
+                .text(val.toString()));
                 chrome.runtime.sendMessage({
                     type: "ADD_SESSION",
                     sessionName: val
                 });
-                if (val == currentSession) {
-                    sessionDropdown.selectedIndex = sessionDropdown.length - 1;
+                if (value == currentSession) {
+                    sessionList[0].selectedIndex = index;
                 }
             }
             
@@ -230,7 +227,7 @@ $(document).ready((function () {
         document.querySelector("#new_session_button").addEventListener('click', newSession);
 
         function activateSession() {
-            var sessionList = $("#session_dropdown");
+            var sessionList = $("#session_list")[0];
             chrome.runtime.sendMessage({
                 type: "SWITCH_SESSION",
                 sessionName: sessionList[sessionList.selectedIndex].value
@@ -297,177 +294,118 @@ $(document).ready((function () {
             expandedState[value.pageIndex] = false;
         });
 
+        function initializeMetaData(data) {
+            
+        }
         //used for asynchronous calls
-        function appendPreviewElements(pageUrl, callback) {
-  
-            $.get(pageUrl, function (data) {
-                
-                function passAfterInit(metaData) {
-                    return $(metaData).filter("meta[content]");
-                }
+        function appendElements(callback) {
+        
+
+            $.get("http://www.w3schools.com/css/css_outline.asp", function (data) {
                 //waiting meta data init
-                callback(passAfterInit(data));
+                callback(return function () {
+                    var metaData = $(data).filter("meta");
+                })
             })
             .fail(function () {
                 console.log("Data could not be loaded.");
             });
         }
-
-        function setExpandedState(pageIndex, callback) {
-            expandedState[pageIndex] = !expandedState[pageIndex];
-            callback(expandedState[pageIndex]);
-        }
         function expandPageInfo(pageIndex, pageUrl) {
-           
-            setExpandedState(pageIndex, function (state) {
+            //var pageIndex = formInfo.name;
+            //pageIndex.replace("expandDropdownForm", "");
 
-                var expandedDropdown = document.getElementById("expandedDropdown" + pageIndex);
-                if (state == true && expandedDropdown === null) {
+            //toggle expanded state boolean
+            if (pageIndex !== null && pageIndex !== undefined) {
+                expandedState[pageIndex] = !expandedState[pageIndex];
+
+
+                if (expandedState[pageIndex] == true) {
                     var expandedDropdownId = "expandedDropdown" + pageIndex;
                     var itemContainer = $("#itemContainer" + pageIndex);
                     var pageInfoContainer = $("<div></div>")
                         .attr("class", "row")
                         .attr("id", expandedDropdownId);
 
-                    var pagePreview = $("<div></div>")
-                        .attr("class", "card grey lighten-5 col s6")
-                        .attr("id", "pagePreview" + pageIndex);
-
-                    //render page statistics
                     var pageStats = $("<div></div>")
-                        .attr("class", "card grey lighten-5 col s6")
-                        .attr("id", "pageStats" + pageIndex)
-                        .css("max-height", $("#pagePreview" + pageIndex).height());;
+                        .attr("class", "col s6");
 
-                    var pageTimes = $("<div></div>")
-                        .attr("class", "card-content")
-                        .append($("<div></div>")
-                            .attr("class", "mobileViewTitle valign-wrapper")
-                            .append($("<span></span>")
-                            .attr("class", "card-title grey-text text-darken-5")
-                            .append("Visits")));
+                    pageStats.append($("<div></div>")
+                        .attr("style","width:100px ; height:100px;")
+                        );
 
-                    var pageBackLinks = $("<div></div>")
-                        .attr("class", "card-reveal");
+                    var pagePreview = $("<div></div>")
+                        .attr("class", "col s6");
 
-                    var pageForwardLinks = $("<div></div>")
-                        .attr("class", "card-reveal");
-
-                    var pageContexts = $("<div></div>")
-                        .attr("class", "card-reveal");
-
-                    var pageSessions = $("<div></div>")
-                        .attr("class", "card-reveal");
-
-                    var getTimes = new Promise(
-                            function (resolve, reject) {
-                                var timeCollection = $("<ul></ul>")
-                                    .attr("class", "collection timeList");
-                                var timesAdded = false;
-                                var expandedNode = $.grep(historyItems, function (item, index) {
-                                    if (item.pageIndex == pageIndex) {
-                                        return item;
-                                    }
-                                });
-
-                                if (expandedNode != undefined) {
-                                    chrome.history.getVisits({ url: pageUrl }, function (visits) {
-                                        visits.forEach(function (visit, index) {
-                                            var date = new Date(visit.visitTime);
-                                            timeCollection.append($("<li></li>")
-                                                .attr("class", "collection-item row valign-wrapper")
-                                                .append($("<span><span>")
-                                                    .append(date.toString())));
-                                            if (index == visits.length - 1) {
-                                                resolve(timeCollection);
-                                            }
-                                        })                   
-                                    });
-                                }
-                                else {
-                                    console.log("URL not found!");
-                                }   
-                                
-                            });
-
-                    getTimes.then(function (timeCollection) {
-                        pageTimes.append(timeCollection);
-                        pageStats.append(pageTimes);
-                    });
+                    var cardContainer = $("<div></div>")
+                        .attr("class", "card");
 
                     var image = new Image();
 
                     image.id = "pagePreview" + pageIndex;
-                    image.src = "img/frontier_icon_128.png"; //"http://www.snapit.io/snaps?url=" + pageUrl + "&max_width=400&max_height=300&fullpage=false";
+                    image.src = "http://www.snapit.io/snaps?url=" + pageUrl + "&max_width=400&max_height=300&fullpage=false";
                     
                     //initialize meta data here. Get meta elements as needed, missing assets may cause errors
                     
                     
                     //.get() throws errors if page assets do not specifiy protocol
-                    appendPreviewElements(pageUrl, function (metaData) {
-                        var getDescription;
-
+                    appendElements(function (metaData) {
+                        var metaDescription = "";
                         if (metaData !== undefined) {
 
-                            getDescription = new Promise(function (resolve, reject) {
-                                    metaData.each(function (index) {
-                                    if ($(this).prop("name") == "description" || $(this).prop("name") == "Description") {
-                                        resolve($(this).prop("content"));
-                                        return false;
-                                    } else if ($(this).prop("name") == "twitter:description") {
-                                        resolve($(this).prop("content"));
-                                        return false;
-                                    } else if ($(this).attr("property") == "og:description") {
-                                        resolve($(this).prop("content"));
-                                        return false;
-                                    } else if (index == metaData.length - 1) {
-                                        resolve("No Description Available...");
-                                    }
+                            metaData.every(function (metaTag) {
+                                if (metaTag.name == 'description' || metaTag.name == 'Description') {
+                                    metaDescription = metaTag.content;
+                                    return false;
+                                } else if (metaTag.name =='twitter:description') {
+                                    metaDescription = metaTag.content;
+                                    return false;
+                                } else if (metaTag.property = 'og:description') {
+                                    metaDescription = metaTag.content;
+                                    return false;
+                                } else {
                                     return true;
-                                });
+                                }
                             });
-                        } else {
-                            getDescription = new Promise(function (resolve, reject) {
-                                resolve("No Description Available...");
-                            });
+                            
                         }
 
-                        getDescription.then(function (metaDescription) {
-                            var pageLink = $("#linkContainer" + pageIndex).find("a");
-                            pagePreview.append($("<div></div>")
-                                .attr("class", "card-image")
-                                    .append(image))
-                                .append(
-                                        $("<div></div>")
-                                        .attr("class", "card-content")
-                                        .append($("<h6></h6>")
-                                            .append(UrlHostName($(pageLink).attr("href"))))
-                                        .append($("<p></p>")
-                                            .append(metaDescription))
-                                )
-                                .append($("<div></div>")
-                                    .attr("class", "card-action")
-                                    .append($("<a></a>")
-                                        .attr("href", pageUrl)
-                                        .append("Go to Page")));
-      
-                            pageInfoContainer.append(pagePreview);
-                            pageInfoContainer.append(pageStats);
-                            
+                        var pageLink = $("#linkContainer" + pageIndex).find("a");
+                        cardContainer.append($("<div></div>")
+                            .attr("class", "card-image")
+                                .append(image)
+                                .append($("<span></span>")
+                                    .attr("class", "card-title")
+                                    .append(UrlHostName($(pageLink).attr("href"))))
+                            .append(
+                                $("<div></div>")
+                                .attr("class", "card-content")
+                                .append($("<p></p>").append(metaDescription))
+                            ))
+                            .append($("<div></div>")
+                                .attr("class", "card-action")
+                                .append($("<a></a>")
+                                    .attr("href", pageUrl)
+                                    .append("Go to Page")));
 
-                            itemContainer.append(pageInfoContainer);
-                        });
-                     
+                        pagePreview.append(cardContainer);
+                        pageInfoContainer.append(pageStats);
+                        pageInfoContainer.append(pagePreview);
+
+                        itemContainer.append(pageInfoContainer);
                     });
-                   
+                    
+                    
+                    
+
+                    
 
                     //simulates fake click via jQuery
                     //$("#dd" + pageIndex).click();
-                } else if (state == false && expandedDropdown !== null) {
+                } else if (expandedState[pageIndex] == false && $("#expandedDropdown" + pageIndex) !== undefined) {
                     $("#expandedDropdown" + pageIndex).remove();
                 }
-            });
-            
+            }
         }
 
         historyItems.forEach(function (value) {

@@ -47,6 +47,7 @@
     <Content Include="app\history.html" />
     <Content Include="app\history.js" />
     <Content Include="app\history_ui.css" />
+    <Content Include="app\img\dropdown.png" />
     <Content Include="app\img\frontierblue_icon_16.png" />
     <Content Include="app\img\frontier_icon_128.png" />
     <Content Include="app\img\frontier_icon_16.png" />
@@ -69,6 +70,9 @@
     <Content Include="app\materialize.min.js" />
     <Content Include="app\options.html" />
     <Content Include="app\page_ui.js" />
+    <Content Include="app\popup.css" />
+    <Content Include="app\popup.html" />
+    <Content Include="app\popup.js" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />
     <Content Include="screenshots\screenshot.png" />

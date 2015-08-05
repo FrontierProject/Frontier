@@ -16,6 +16,8 @@ Set.prototype.toArray = function() {
 
 var sessions = {};
 var pageCount = 0;
+const DEFAULT_SESSION = "Default";
+var currentSession = DEFAULT_SESSION;
 
 function AddSession(sessionName) {
     if (!(sessions[sessionName])) {
@@ -34,10 +36,10 @@ function AddSession(sessionName) {
             backLinks:    {}
         };
     }
+    currentSession = sessionName;
 }
 
-const DEFAULT_SESSION = "Default";
-var currentSession = DEFAULT_SESSION;
+//Excecuted once
 AddSession(DEFAULT_SESSION);
 
 // strip out everything except host and pathname
@@ -89,24 +91,34 @@ function ForkedLinks(target) {
 var blackListedUrls = new Set([
     "www.google.com/_/chrome/newtab",
     "newtab/",
-    "chrome://history/"
+    "chrome://history/",
+    "chrome://extensions/",
+    "chrome://settings/",
+    "chrome://help/"
 ]);
 
 // add link object graph adjacency lists
 // NOTE: we also store the transpose of the url graph
 function AddLink(link, sender) {
     var targetUrlStr = UrlHostPathname(link.target);
+    var sourceUrlStr = UrlHostPathname(link.source);
+    var sourceUrlLength = link.source.length;
 
     if (blackListedUrls.has(targetUrlStr))
         return;
 
     var nodes = sessions[currentSession].nodes;
 
-    
+    // timestamp
+    //if (!(nodes[targetUrlStr].timestamps)) {
+    //    nodes[targetUrlStr].timestamps = [];
+    //}
+    //nodes[targetUrlStr].timestamps.push(Date.now());
+
     // insert target node
     if (!(nodes[targetUrlStr])) {
         nodes[targetUrlStr] = {
-            url:    targetUrlStr,
+            url: targetUrlStr,
             rawUrl: link.target,
             title: link.title,
             pageIndex: pageCount
@@ -115,19 +127,10 @@ function AddLink(link, sender) {
     } else {
         nodes[targetUrlStr].title = link.title;
     }
-
-    // timestamp
-    //if (!(nodes[targetUrlStr].timestamps)) {
-    //    nodes[targetUrlStr].timestamps = [];
-    //}
-    //nodes[targetUrlStr].timestamps.push(Date.now());
-    var date = new Date();
-    nodes[targetUrlStr].hours   = date.getHours();
-    nodes[targetUrlStr].minutes = date.getMinutes();
+    //nodes[targetUrlStr].dateTime.push(date);
 
     // check that source URL is a nonempty string
-    if (link.source.length > 0) {
-        var sourceUrlStr = UrlHostPathname(link.source);
+    if (sourceUrlLength > 0) {
 
         //  check for a self loop
         if (sourceUrlStr != targetUrlStr) {
@@ -140,7 +143,7 @@ function AddLink(link, sender) {
                    url:    sourceUrlStr,
                    rawUrl: link.source,
                    title: link.source.title,
-                   pageIndex: pageCount
+                   pageIndex: pageCount,
                 };
                 pageCount += 1;
             }
@@ -157,6 +160,7 @@ function AddLink(link, sender) {
             backLinks[targetUrlStr].add(sourceUrlStr);
         }
     }
+         
 }
 
 function RemoveLink(pageIndex, sender) {
@@ -263,6 +267,20 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 title: tab.title,
                 pageIndex: pageCount
             };
+
+            /*
+            var day = date.getDate();
+            var month = date.getMonth() + 1; //January is 0
+            var year = date.getFullYear();
+
+            if (day < 10) {
+                day = '0' + day
+            }
+
+            if (month < 10) {
+                month = '0' + month
+            }*/
+
             pageCount++;
         }
         
@@ -288,10 +306,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, SendResponse) {
     } else if (request.type == "ADD_SESSION") {
         if (request.sessionName) {
             var sessionName = request.sessionName;
-            if (!sessions[sessionName]) {
-                AddSession(sessionName);
-            }
-            currentSession = sessionName;
+            AddSession(sessionName);
         }
     } else if (request.type == "SWITCH_SESSION") {
         if (request.sessionName) {
